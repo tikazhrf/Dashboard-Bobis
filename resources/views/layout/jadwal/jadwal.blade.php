@@ -158,12 +158,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -238,7 +239,6 @@
                       <th>Destination</th>
                       <th>Start at</th>
                       <th>End at</th>
-                      <th>Duration Journey</th>
                       <th>Operation Day</th>
                       <th>Action</th>
                     </tr>
@@ -253,7 +253,6 @@
                       <td>{{ $row->destination }}</td>
                       <td>{{ $row->start_at }}</td>
                       <td>{{ $row->end_at }}</td>
-                      <td>{{ $row->duration_journey }}</td>
                       <td>
                         @foreach($row->operation_day as $name)
                         {{ $name }},
@@ -326,7 +325,7 @@
           if (willDelete) {
             window.location = "/deletejadwal/"+jadwalid+""
             swal("The Schedule has been successfully deleted!", {
-              icon: "success",
+              icon: "success3",
             });
           } else {
             swal (
@@ -339,8 +338,8 @@
 
 </script>
 <script>
-  @if (Session::has('success'))
-    toastr.success("{{  Session::get('success') }}")
+  @if (Session::has('success3'))
+    toastr.success("{{  Session::get('success3') }}")
   @endif
 </script>
 

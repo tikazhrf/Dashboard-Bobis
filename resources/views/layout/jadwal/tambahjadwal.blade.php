@@ -27,6 +27,8 @@
 
   gtag('config', 'UA-94034622-3');
 </script>
+
+
 <!-- /END GA --></head>
 
 <body>
@@ -157,12 +159,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -251,10 +254,6 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-6">
-                            <label>Duration Journey</label>
-                            <input id="duration-input" type="duration" name="duration_journey" class="form-control waktu" required="" required pattern="[0-9]{2}:[0-9]{2}:[0-9]{2}:[0-9]{2}" value="00:00:00:00">
-                        </div>
                         <div class="form-group col-6">
                           <label class="d-block">Operation Day</label>
                           <div class="form-check form-check-inline">

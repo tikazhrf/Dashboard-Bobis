@@ -12,10 +12,10 @@ class BusController extends Controller
     public function databus(Request $request){
 
         if ($request->has('search')) {
-            $data = Bus::where('code_bus','LIKE','%' .$request->search.'%')->paginate(10);
+            $data = Bus::where('code_bus','LIKE','%' .$request->search.'%')->paginate(5);
             Session::put('halaman_url', request()->fullUrl());
         } else {
-            $data = Bus::paginate(10);
+            $data = Bus::paginate(5);
             Session::put('halaman_url', request()->fullUrl());
         }
 
@@ -72,7 +72,7 @@ class BusController extends Controller
         $data = Bus::find($id);
         $data->delete();
 
-        return redirect()->route('databus')->with('success', 'Data bus successfully deleted');
+        return redirect()->route('databus')->with('success1', 'Data bus successfully deleted');
     }
 }
 ?>

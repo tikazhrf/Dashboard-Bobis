@@ -160,12 +160,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -228,7 +229,7 @@
           <div class="card mb-2">
             <table>
               <tr>
-                <th class="col-2">Duration Journey</th>
+                <th class="col-2">Departure Time</th>
                 <th class="col-2">Route</th>
                 <th class="col-2"></th>
                 <th class="col-2">Seat</th>
@@ -237,11 +238,11 @@
               </tr>
             </table>
           </div>
-          @foreach ($data as $item)
+          {{-- @foreach ($data as $item)
           <div class="card mb-2">
             <table class="table table-md">
               <tr>
-                <td class="col-2">{{ $item->duration_journey }}</td>
+                <td class="col-2">{{ $item->start_at }}</td>
                 <td class="col-2">{{ $item->origin }}</td>
                 <td class="col-2">{{ $item->destination }}</td>
                 <td class="col-2">{{ $item->seat }}</td>
@@ -251,13 +252,20 @@
             </table><hr>
             <table class="table table-md">
               <tr>
-                <td>
+                <td class="col-2">
                   <img src="{{ asset('busimage/'.$item->image) }}" alt="" style="width: 30px;">
+                </td>
+                <td class="col-2">{{ $item->namapo }}</td>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2">
+                  <a href="" class="btn btn-primary text-align-right">View Seat</a>
                 </td>
               </tr>
             </table>
           </div>
-          @endforeach
+          @endforeach --}}
         </section>
       </div>
 

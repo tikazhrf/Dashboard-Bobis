@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jadwals', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->time('start_at');
-            $table->time('end_at');
-            $table->string('operation_day');
+            $table->string('company_name');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwals');
+        Schema::dropIfExists('companies');
     }
 };

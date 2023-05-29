@@ -124,7 +124,7 @@
                 <img src="{{ asset('style/dist/assets/img/logo_bobus-215x215.png')}}" width="50px">
             </a>
           </div>
-          @if (auth()->user()->role == "SuperSuperadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver")
+          @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver")
           <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
             <li class="dropdown active">
@@ -157,12 +157,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -196,7 +197,7 @@
           <div class="section-header">
             <h1>Edit Ticket Category</h1>
             <div class="section-header-breadcrumb">
-              <div class="breadcrumb-item active"><a href="#">Bobus Dashboard</a></div>
+              <div class="breadcrumb-item active"><a href="/">Bobus Dashboard</a></div>
               <div class="breadcrumb-item">Edit Ticket Category</div>
             </div>
           </div>
@@ -207,14 +208,15 @@
                 @csrf
                   <div class="card-body">
                     <div class="row">
-                        <div class="form-group col">
-                            <label>Ticket Category</label>
-                            <input type="text" name="ticket_category" class="form-control" required="" value="{{ $data->ticket_category }}">
-                        </div>
+                      <div class="form-group col">
+                        <label>Ticket Category</label>
+                        <input type="text" name="ticket_category" class="form-control" required="" value="{{ $data->ticket_category }}">
+                      </div>
                     </div>
 
-                  <div class="card-footer text-right">
-                    <button class="btn btn-primary">Submit</button>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -247,6 +249,5 @@
   <!-- Template JS File -->
   <script src="{{ asset('style/dist/assets/js/scripts.js')}}"></script>
   <script src="{{ asset('style/dist/assets/js/custom.js')}}"></script>
-  
 </body>
 </html>

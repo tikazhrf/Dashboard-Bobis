@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jadwals', function (Blueprint $table) {
+        Schema::create('bus_stops', function (Blueprint $table) {
             $table->id();
-            $table->time('start_at');
-            $table->time('end_at');
-            $table->string('operation_day');
+            $table->string('bus_stops');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwals');
+        Schema::dropIfExists('bus_stops');
     }
 };

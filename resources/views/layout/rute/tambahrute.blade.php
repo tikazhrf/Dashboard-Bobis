@@ -157,12 +157,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -209,24 +210,25 @@
                     <div class="row">
                         <div class="form-group col-6">
                             <label>Bus Code</label>
-                              <select class="custom-select" name="code_bus">
+                              <select class="custom-select" name="code_bus_id">
                                 <option selected>Select Bus Code</option>
                                 @foreach ($data as $row)
-                                <option value="{{ $row->code_bus }}">{{ $row->code_bus }}</option>
+                                <option value="{{ $row->id }}">{{ $row->code_bus }}</option>
                                 @endforeach
                               </select>
                         </div>
                         <div class="form-group col-6">
-                            <label>Origin</label>
-                            <input type="text" name="origin" class="form-control" required="">
+                          <label>Origin</label>
+                            <select class="custom-select" name="bus_stops_id">
+                              <option selected>Select Origin</option>
+                              @foreach ($data as $row)
+                              <option value="{{ $row->id }}">{{ $row->bus_stops }}</option>
+                              @endforeach
+                            </select>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-6">
-                            <label>Destination</label>
-                            <input type="text" name="destination" class="form-control" required="">
-                        </div>
                         <div class="form-group col-6">
                             <label>Price</label>
                             <div class="input-group">

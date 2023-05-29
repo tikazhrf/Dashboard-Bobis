@@ -41,7 +41,7 @@ class JadwalController extends Controller
         }
         Jadwal::create($input);
 
-        return redirect()->route('jadwal')->with('success', 'Schedule successfully added');
+        return redirect()->route('jadwal')->with('success3', 'Schedule successfully added');
     }
 
     public function tampiljadwal($id) {
@@ -57,13 +57,13 @@ class JadwalController extends Controller
         $data = Jadwal::find($id);
         $data->update($request->all());
 
-        return redirect()->route('jadwal')->with('success', 'Schedule successfully updated'); 
+        return redirect()->route('jadwal')->with('success3', 'Schedule successfully updated'); 
     }
 
     public function deletejadwal($id) {
         $data = Jadwal::find($id);
         $data->delete();
 
-        return redirect()->route('jadwal')->with('success', 'Schedule successfully deleted');
+        return redirect()->route('jadwal')->with('success3', 'Schedule successfully deleted');
     }
 }

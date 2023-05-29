@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>BOBUS DASHBOARD</title>
+  <title>Ecommerce Dashboard &mdash; Stisla</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('style/dist/assets/modules/bootstrap/css/bootstrap.min.css')}}">
@@ -18,7 +18,6 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/components.css')}}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 <script>
@@ -179,9 +178,9 @@
               <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
               <ul class="dropdown-menu">
                {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
-                <li><a href="login">Login</a></li> 
-                <li><a href="register">Register</a></li> 
-                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}} 
+               <li><a href="login">Login</a></li> 
+               <li><a href="register">Register</a></li> 
+               {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
               </ul>
 
               @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -196,35 +195,40 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>User Management</h1>
+            <h1>Add Bus Stops</h1>
             <div class="section-header-breadcrumb">
-              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-              <div class="breadcrumb-item"><a>User Management</a></div>
+              <div class="breadcrumb-item active"><a href="/">Bobus Dashboard</a></div>
+              <div class="breadcrumb-item">Add Bus Stops</div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3">
-              <div class="card" style="width: 18rem;">
-                <img class="card-img-top mx-auto" src="{{ asset('style/dist/assets/img/new.png') }}" alt="Card image cap" style="width: 10rem; align: middle" >
-                <div class="card-body">
-                  <h5>Management PO</h5>
-                  <div class="breadcrumb-item active"><a href="/detailmanagement" class=" col btn btn-primary">Show Details</a></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card" style="width: 18rem;">
-                <img class="card-img-top mx-auto" src="{{ asset('style/dist/assets/img/new.png') }}" alt="Card image cap" style="width: 10rem; align: middle" >
-                <div class="card-body">
-                  <h5>Driver</h5>
-                  <div class="breadcrumb-item active"><a href="/detaildriver" class=" col btn btn-primary">Show Details</a></div>
-                </div>
+            <div class="col-6">
+              <div class="card">
+                <form action="/insertbusstops" method="post" enctype="multipart/form-data">
+                @csrf
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col">
+                            <label>Bus Stops</label>
+                            <input type="text" name="bus_stops" class="form-control" required="">
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
         </section>
-      </div>
-   
+    </div>
+                
+        
+      
+
+
   <!-- General JS Scripts -->
   <script src="{{ asset('style/dist/assets/modules/jquery.min.js')}}"></script>
   <script src="{{ asset('style/dist/assets/modules/popper.js')}}"></script>
@@ -247,10 +251,6 @@
   <!-- Template JS File -->
   <script src="{{ asset('style/dist/assets/js/scripts.js')}}"></script>
   <script src="{{ asset('style/dist/assets/js/custom.js')}}"></script>
-
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+  
 </body>
-
 </html>

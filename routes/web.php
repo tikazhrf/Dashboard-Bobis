@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BusStopsController;
 use App\Http\Controllers\BookingTiketController;
 use App\Http\Controllers\BusController;
 use App\Http\Controllers\DetailManagement;
@@ -90,8 +91,15 @@ Route::get('/trackrutebus',[TrackBusController::class, 'trackrutebus'])->name('t
 //Booking Tiket
 Route::get('/tampilimage/{id}', [BusController::class, 'tampilimage'])->name('tampilimage');
 
-
 //User Management
 Route::get('/usermanagement', [UserManagementController::class, 'usermanagement'])->name('usermanagement');
 Route::get('/detailmanagement', [LoginController::class, 'detailmanagement'])->name('detailmanagement');
 Route::get('/tampilmanagement/{id}', [LoginController::class, 'tampilmanagement'])->name('tampilmanagement');
+
+//All Rute
+Route::get('/busstops', [BusStopsController::class, 'busstops'])->name('busstops');
+Route::get('/tambahbusstops', [BusStopsController::class, 'tambahbusstops'])->name('tambahbusstops');
+Route::post('/insertbusstops',[BusStopsController::class, 'insertbusstops'])->name('insertbusstops');
+Route::get('/tampilbusstops/{id}', [BusStopsController::class, 'tampilbusstops'])->name('tampilbusstops');
+Route::post('/updatebusstops/{id}',[BusStopsController::class, 'updatebusstops'])->name('updatebusstops');
+Route::get('/deletebusstops/{id}',[BusStopsController::class, 'deletebusstops'])->name('deletebusstops');

@@ -112,7 +112,7 @@
           </li>
         </ul>
       </nav>
-      < class="main-sidebar sidebar-style-2">
+      <div class="main-sidebar sidebar-style-2">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="/">
@@ -157,12 +157,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -194,30 +195,33 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Add Ticket Category</h1>
+            <h1>Add Category Ticket</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="#">Bobus Dashboard</a></div>
-              <div class="breadcrumb-item">Add Ticket Category</div>
+              <div class="breadcrumb-item">Add Category Ticket</div>
             </div>
           </div>
           <div class="row">
-            <div class="col-12 col-md-6">
+            <div class="col-6">
               <div class="card">
                 <form action="/inserttiket" method="post" enctype="multipart/form-data">
                 @csrf
                   <div class="card-body">
                     <div class="row">
                         <div class="form-group col">
-                            <label>Ticket Category</label>
+                            <label>Category Name</label>
                             <input type="text" name="ticket_category" class="form-control" required="">
                         </div>
                     </div>
 
-                  <div class="card-footer text-right">
-                    <button class="btn btn-primary">Submit</button>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-primary">Submit</button>
+                    </div>
                   </div>
                 </form>
               </div>
+            </div>
+          </div>
         </section>
     </div>
                 

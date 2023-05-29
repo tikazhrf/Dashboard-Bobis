@@ -178,10 +178,10 @@
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
               <ul class="dropdown-menu">
-               {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
+                {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
                 <li><a href="login">Login</a></li> 
                 <li><a href="register">Register</a></li> 
-                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}} 
+                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
               </ul>
 
               @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -196,31 +196,72 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>User Management</h1>
+            <h1>Bus Stops</h1>
             <div class="section-header-breadcrumb">
-              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-              <div class="breadcrumb-item"><a>User Management</a></div>
+              <div class="breadcrumb-item active"><a href="/">Bobus Dashboard</a></div>
+              <div class="breadcrumb-item"><a>Bus Stops</a></div>
             </div>
           </div>
+          <div class="card-header-form">
+            
+            {{-- @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+              {{ $message }}
+            </div>
+            @endif --}}
           <div class="row">
-            <div class="col-md-3">
-              <div class="card" style="width: 18rem;">
-                <img class="card-img-top mx-auto" src="{{ asset('style/dist/assets/img/new.png') }}" alt="Card image cap" style="width: 10rem; align: middle" >
-                <div class="card-body">
-                  <h5>Management PO</h5>
-                  <div class="breadcrumb-item active"><a href="/detailmanagement" class=" col btn btn-primary">Show Details</a></div>
+          <div class="col">
+            <div class="card">
+              <div class="card-header">
+                <h4>Bus Stops</h4>
+                <div class="card-header-form">
+                <form>
+                  <div class="input-group">
+                    <form action="busstops" method="get">
+                    <input type="search" class="form-control" placeholder="Search" name="search">
+                    <div class="input-group-btn">
+                      <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                    </div>
+                    <a  href="/tambahbusstops" class="btn btn-primary">Add Bus Stops</a>
+                    {{-- Session::get('halaman_url') --}}
+                    </form>
+                  </div>
+                </form>
                 </div>
               </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card" style="width: 18rem;">
-                <img class="card-img-top mx-auto" src="{{ asset('style/dist/assets/img/new.png') }}" alt="Card image cap" style="width: 10rem; align: middle" >
-                <div class="card-body">
-                  <h5>Driver</h5>
-                  <div class="breadcrumb-item active"><a href="/detaildriver" class=" col btn btn-primary">Show Details</a></div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-striped table-md">
+                    <tr>
+                      <th>#</th>
+                      <th>Bus Stops</th>
+                      <th>Action</th>
+                    </tr>
+                    @php
+                        $no = 1;   
+                    @endphp
+                    @foreach ($data as $index => $row)
+                    <tr>
+                      <th scope="row">{{ $index + $data->firstItem() }}</th>
+                      <td>{{ $row->bus_stops }}</td>
+                      <td>
+                        <a href="/tampilbusstops/{{ $row->id }}" class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
+                        <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete" data-id="{{ $row->id }}" data-nama="{{ $row->bus_stops }}"></a>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </table>
                 </div>
               </div>
+              <div class="card-footer text-right">
+                <nav class="d-inline-block">
+                  <ul class="pagination mb-0">
+                    {{ $data->links() }}  
+                  </ul>
+                </nav>
+              </div>
             </div>
+          </div>
           </div>
         </section>
       </div>
@@ -252,5 +293,36 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 </body>
+<script>
+  $('.delete').click( function() {
+    var busstopsid = $(this).attr('data-id');
+    var nama = $(this).attr('data-nama');
+    swal({
+          title: "Are you sure?",
+          text: "You will clear Bus Stops "+nama+" ",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+      })
+      .then((willDelete) => {
+          if (willDelete) {
+            window.location = "/deletebusstops/"+busstopsid+""
+            swal("The Bus Stops has been successfully deleted!", {
+              icon: "success",
+            });
+          } else {
+            swal (
+              {
+                text: " "+nama+" is not deleted!"
+              });
+          }
+      });
+  });
 
+</script>
+<script>
+  @if (Session::has('success'))
+    toastr.success("{{  Session::get('success') }}")
+  @endif
+</script>
 </html>

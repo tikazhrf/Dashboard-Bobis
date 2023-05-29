@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jadwals', function (Blueprint $table) {
-            $table->id();
-            $table->time('start_at');
-            $table->time('end_at');
-            $table->string('operation_day');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('rutes', function (Blueprint $table) {
+            $table->foreignId('code_bus_id');
         });
     }
 
@@ -30,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwals');
+        Schema::table('rutes', function (Blueprint $table) {
+            $table->dropColumn('code_bus_id');
+        });
     }
 };

@@ -158,12 +158,13 @@
             @endif
 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver" )
-              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route</span></a></li>
+              <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+              <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
               <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
             @endif
 
             @if (auth()->user()->role == "Superadmin" )
-              <li><a class="nav-link" href="/trackbus"><i class="fas fa-map-marker-alt"></i><span>Track Bus</span></a></li>
+              <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track Bus</span></a></li>
             @endif
                 
             @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -235,7 +236,6 @@
                       <th>#</th>
                       <th>Bus Code</th>
                       <th>Origin</th>
-                      <th>Destination</th>
                       <th>Price</th>
                       <th>Action</th>
                     </tr>
@@ -245,9 +245,8 @@
                     @foreach ($data as $index => $row)
                     <tr>
                       <th scope="row">{{ $index + $data->firstItem() }}</th>
-                      <td>{{ $row->code_bus }}</td>
-                      <td>{{ $row->origin }}</td>
-                      <td>{{ $row->destination }}</td>
+                      <td>{{ $row->buses->code_bus }}</td>
+                      <td>{{ $row->busstops->bus_stops }}</td>
                       <td>{{ $row->price }}</td>
                       <td>
                         <a href="/tampilrute/{{ $row->id }}" class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>

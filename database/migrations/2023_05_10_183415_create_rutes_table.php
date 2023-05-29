@@ -15,9 +15,6 @@ return new class extends Migration
     {
         Schema::create('rutes', function (Blueprint $table) {
             $table->id();
-            $table->string('code_bus');
-            $table->string('origin');
-            $table->string('destination');
             $table->bigInteger('price');
             $table->timestamps();
             $table->softDeletes();
