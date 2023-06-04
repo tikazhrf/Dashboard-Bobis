@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('plate_number');
             $table->date('bpkb_expired');
             $table->string('driver');
-            $table->integer('seat');
+            $table->integer('total_seats');
+            $table->foreignId('jadwals_id')->constrained('jadwals');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -37,4 +38,3 @@ return new class extends Migration
         Schema::dropIfExists('buses');
     }
 };
-?>

@@ -10,14 +10,13 @@ class Jadwal extends Model
 {
     use HasFactory;
 
+    protected $table = "jadwals";
+    protected $primaryKey = "id";
     protected $fillable = [
-        'code_bus',
-        'origin',
-        'destination',
         'start_at',
         'end_at',
-        'duration_journey',
-        'operation_day'
+        'operation_day',
+        'rutes_id'
     ];
 
     public function setOperationDayAttribute($value)
@@ -30,9 +29,13 @@ class Jadwal extends Model
         return $this->attributes['operation_day'] = json_decode($value);
     }
 
-    public function rutes() {
-        
-        return $this->belongsTo(Rute::class, 'code_bus_id', 'origin_id', 'destination_id', 'id');
+    public function rutes()
+    {
+        return $this->belongsTo(Rute::class);
+    }
+
+    public function buses()
+    {
+        return $this->belongsToMany(Bus::class);
     }
 }
-

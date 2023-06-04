@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RuteSeeder extends Seeder
+class BusStopSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,10 +15,12 @@ class RuteSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('rutes')->insert([
-            'price' => '10000',
-            'origin_id' => 1,
-            'destination_id' => 2,
+        DB::table('bus_stops')->insert([
+            'bus_stops' => 'PENS',
+        ]);
+
+        DB::table('bus_stops')->insert([
+            'bus_stops' => 'UNESA',
         ]);
     }
 }

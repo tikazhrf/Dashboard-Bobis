@@ -16,13 +16,14 @@ class BusSeeder extends Seeder
     public function run()
     {
         DB::table('buses')->insert([
-            'image' => '6306447.jpg',   
+            'image' => '6306447.jpg',
             'code_bus' => '1A',
             'vin' => '392whjd28',
             'plate_number' => 'L8976WH',
             'bpkb_expired' => '2023/10/12',
             'driver' => 'Suprapto',
-            'seat' => '30'
+            'total_seats' => '30',
+            'jadwals_id' => 1,
         ]);
     }
 }

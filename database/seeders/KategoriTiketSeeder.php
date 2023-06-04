@@ -16,7 +16,15 @@ class KategoriTiketSeeder extends Seeder
     public function run()
     {
         DB::table('jenis_tikets')->insert([
-            'ticket_category' => 'Disability',
+            'ticket_category' => 'Disabilitas',
+        ]);
+
+        DB::table('jenis_tikets')->insert([
+            'ticket_category' => 'Ibu Hamil',
+        ]);
+
+        DB::table('jenis_tikets')->insert([
+            'ticket_category' => 'Umum',
         ]);
     }
 }

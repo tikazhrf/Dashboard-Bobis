@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rutes', function (Blueprint $table) {
-            $table->foreignId('bus_stops_id');
+        Schema::create('penumpang', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('age');
+            $table->foreignId('kontak_penumpang_id')->constrained('kontak_penumpang');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('rutes', function (Blueprint $table) {
-            $table->dropColumn('bus_stops_id');
-        });
+        Schema::dropIfExists('penumpang');
     }
 };
