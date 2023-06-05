@@ -9,6 +9,8 @@ use App\Http\Controllers\DetailPOController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\RuteController;
 use App\Http\Controllers\TrackBusController;
 use App\Http\Controllers\UserManagementController;
@@ -103,3 +105,12 @@ Route::post('/insertbusstops',[BusStopsController::class, 'insertbusstops'])->na
 Route::get('/tampilbusstops/{id}', [BusStopsController::class, 'tampilbusstops'])->name('tampilbusstops');
 Route::post('/updatebusstops/{id}',[BusStopsController::class, 'updatebusstops'])->name('updatebusstops');
 Route::get('/deletebusstops/{id}',[BusStopsController::class, 'deletebusstops'])->name('deletebusstops');
+
+
+//Finance
+Route::get('/revenue', [RevenueController::class, 'revenue'])->name('revenue');
+
+
+//Profil
+Route::get('/profile', [ProfilController::class, 'profile'])->name('profile');
+Route::get('/editprofile', [ProfilController::class, 'editprofile'])->name('editprofile');

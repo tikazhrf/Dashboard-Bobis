@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>BOBUS DASHBOARD</title>
+  <title>BOBUS</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="{{ asset('style/dist/assets/modules/bootstrap/css/bootstrap.min.css')}}">
   <link rel="stylesheet" href="{{ asset('style/dist/assets/modules/fontawesome/css/all.min.css')}}">
+  
 
   <!-- CSS Libraries -->
   <link rel="stylesheet" href="{{ asset('style/dist/assets/modules/jqvmap/dist/jqvmap.min.css')}}">
@@ -20,6 +21,8 @@
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/components.css')}}">
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+<script src="https://kit.fontawesome.com/c998beae83.js" crossorigin="anonymous"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -36,7 +39,7 @@
       <nav class="navbar navbar-expand-lg main-navbar">
         <form class="form-inline mr-auto">
           <ul class="navbar-nav mr-3">
-            <li><a href="/" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
@@ -124,9 +127,9 @@
                 <img src="{{ asset('style/dist/assets/img/logo_bobus-215x215.png')}}" width="50px">
             </a>
           </div>
-
           @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver")
           <ul class="sidebar-menu">
+            <li class="menu-header">Dashboard</li>
             <li class="dropdown active">
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
               <ul class="dropdown-menu">
@@ -177,14 +180,14 @@
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
               <ul class="dropdown-menu">
-               {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
-               <li><a href="login">Login</a></li> 
-               <li><a href="register">Register</a></li> 
-               {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
+                {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
+                <li><a href="login">Login</a></li> 
+                <li><a href="register">Register</a></li> 
+                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
               </ul>
 
-              @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
-                <li><a class="nav-link" href="usermanagement"><i class="fas fa-pencil-ruler"></i> <span>User Management</span></a></li>
+              @if (auth()->user()->role == "admin" || auth()->user()->role == "Management PO")
+                <li><a class="nav-link" href="/usermanagement"><i class="fas fa-pencil-ruler"></i> <span>User Management</span></a></li>
               @endif
             </li>           
           </ul>
@@ -194,137 +197,73 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="card card-statistic-2">
-                <div class="card-stats">
-                  <div class="card-stats-title">Order Statistics - 
-                    <div class="dropdown d-inline">
-                      <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                      <ul class="dropdown-menu dropdown-menu-sm">
-                        <li class="dropdown-title">Select Month</li>
-                        <li><a href="#" class="dropdown-item">January</a></li>
-                        <li><a href="#" class="dropdown-item">February</a></li>
-                        <li><a href="#" class="dropdown-item">March</a></li>
-                        <li><a href="#" class="dropdown-item">April</a></li>
-                        <li><a href="#" class="dropdown-item">May</a></li>
-                        <li><a href="#" class="dropdown-item">June</a></li>
-                        <li><a href="#" class="dropdown-item">July</a></li>
-                        <li><a href="#" class="dropdown-item active">August</a></li>
-                        <li><a href="#" class="dropdown-item">September</a></li>
-                        <li><a href="#" class="dropdown-item">October</a></li>
-                        <li><a href="#" class="dropdown-item">November</a></li>
-                        <li><a href="#" class="dropdown-item">December</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="card-stats-items">
-                    <div class="card-stats-item">
-                      <div class="card-stats-item-count">24</div>
-                      <div class="card-stats-item-label">General</div>
-                    </div>
-                    <div class="card-stats-item">
-                      <div class="card-stats-item-count">12</div>
-                      <div class="card-stats-item-label">Disability</div>
-                    </div>
-                    <div class="card-stats-item">
-                      <div class="card-stats-item-count">23</div>
-                      <div class="card-stats-item-label">Pregnant Mom</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-icon shadow-primary bg-primary">
-                  <i class="fas fa-archive"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>Total Orders</h4>
-                  </div>
-                  <div class="card-body">
-                    59
-                  </div>
-                </div>
-              </div>
+          <div class="section-header">
+            <h1>Revenue</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="/">Bobus Dashboard</a></div>
+              <div class="breadcrumb-item">Revenue</div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="card card-statistic-1">
-                <div class="card-stats">
-                <div class="card-stats-title">Order Statistics - 
-                  <div class="dropdown d-inline">
-                    <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                    <ul class="dropdown-menu dropdown-menu-sm">
-                      <li class="dropdown-title">Select Month</li>
-                      <li><a href="#" class="dropdown-item">January</a></li>
-                      <li><a href="#" class="dropdown-item">February</a></li>
-                      <li><a href="#" class="dropdown-item">March</a></li>
-                      <li><a href="#" class="dropdown-item">April</a></li>
-                      <li><a href="#" class="dropdown-item">May</a></li>
-                      <li><a href="#" class="dropdown-item">June</a></li>
-                      <li><a href="#" class="dropdown-item">July</a></li>
-                      <li><a href="#" class="dropdown-item active">August</a></li>
-                      <li><a href="#" class="dropdown-item">September</a></li>
-                      <li><a href="#" class="dropdown-item">October</a></li>
-                      <li><a href="#" class="dropdown-item">November</a></li>
-                      <li><a href="#" class="dropdown-item">December</a></li>
-                    </ul>
-                  </div>
+          </div>
+          <div class="card mb-2" style="height:7rem">
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group col-md-2">
+                  <label for="inputFrom">Start Date</label>
+                  <input type="date" class="form-control" id="inputDate" placeholder="Date">
                 </div>
+                <div class="d-flex justify-content-center align-items-center fa fa-arrow-alt-circle-right"></div>
+                <div class="form-group col-md-2">
+                  <label for="inputTo">End Date</label>
+                  <input type="date" class="form-control" id="inputDate" placeholder="Date">
                 </div>
-                <div class="card-icon bg-primary">
-                  <i class="far fa-user"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>Total Admin</h4>
-                  </div>
-                  <div class="card-body">
-                    10
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="card card-statistic-1">
-                <div class="card-stats">
-                  <div class="card-stats-title">Order Statistics - 
-                    <div class="dropdown d-inline">
-                      <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                      <ul class="dropdown-menu dropdown-menu-sm">
-                        <li class="dropdown-title">Select Month</li>
-                        <li><a href="#" class="dropdown-item">January</a></li>
-                        <li><a href="#" class="dropdown-item">February</a></li>
-                        <li><a href="#" class="dropdown-item">March</a></li>
-                        <li><a href="#" class="dropdown-item">April</a></li>
-                        <li><a href="#" class="dropdown-item">May</a></li>
-                        <li><a href="#" class="dropdown-item">June</a></li>
-                        <li><a href="#" class="dropdown-item">July</a></li>
-                        <li><a href="#" class="dropdown-item active">August</a></li>
-                        <li><a href="#" class="dropdown-item">September</a></li>
-                        <li><a href="#" class="dropdown-item">October</a></li>
-                        <li><a href="#" class="dropdown-item">November</a></li>
-                        <li><a href="#" class="dropdown-item">December</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  </div>
-                <div class="card-icon bg-danger">
-                  <i class="far fa-newspaper"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>News</h4>
-                  </div>
-                  <div class="card-body">
-                    42
-                  </div>
+                <div class="d-flex justify-content-center align-items-center">
+                  <button class="btn btn-primary">Search</button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </footer>
-    </div>
-  </div>
+          <div class="card mb-2">
+            <table>
+              <tr>
+                <th class="col-2">No</th>
+                <th class="col-2">Date</th>
+                <th class="col-2">No Invoice</th>
+                <th class="col-2">Route</th>
+                <th class="col-2">Grand Total</th>
+                <th class="col-2">Payment Status</th>
+              </tr>
+            </table>
+          </div>
+          {{-- @foreach ($data as $item)
+          <div class="card mb-2">
+            <table class="table table-md">
+              <tr>
+                <td class="col-2">{{ $item->start_at }}</td>
+                <td class="col-2">{{ $item->origin }}</td>
+                <td class="col-2">{{ $item->destination }}</td>
+                <td class="col-2">{{ $item->seat }}</td>
+                <td class="col-2">{{ $item->price }}</td>
+                <td class="col-2">{{ $item->seat }}</td>
+              </tr>
+            </table><hr>
+            <table class="table table-md">
+              <tr>
+                <td class="col-2">
+                  <img src="{{ asset('busimage/'.$item->image) }}" alt="" style="width: 30px;">
+                </td>
+                <td class="col-2">{{ $item->namapo }}</td>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2"></td>
+                <td class="col-2">
+                  <a href="" class="btn btn-primary text-align-right">View Seat</a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          @endforeach --}}
+        </section>
+      </div>
 
   <!-- General JS Scripts -->
   <script src="{{ asset('style/dist/assets/modules/jquery.min.js')}}"></script>

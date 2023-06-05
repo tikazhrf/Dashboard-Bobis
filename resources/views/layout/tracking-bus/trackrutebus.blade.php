@@ -272,7 +272,7 @@
                     <div id="map" data-height="400"></div>
                     <script>
 
-                      const map = L.map('map');
+                      const map = L.map('map').setView([-7.279466, 112.790158], 13);
 
                       const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         maxZoom: 19,

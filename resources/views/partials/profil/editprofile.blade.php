@@ -18,6 +18,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/components.css')}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 <script>
@@ -36,7 +37,7 @@
       <nav class="navbar navbar-expand-lg main-navbar">
         <form class="form-inline mr-auto">
           <ul class="navbar-nav mr-3">
-            <li><a href="/" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
@@ -124,9 +125,9 @@
                 <img src="{{ asset('style/dist/assets/img/logo_bobus-215x215.png')}}" width="50px">
             </a>
           </div>
-
           @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO" || auth()->user()->role == "Driver")
           <ul class="sidebar-menu">
+            <li class="menu-header">Dashboard</li>
             <li class="dropdown active">
               <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
               <ul class="dropdown-menu">
@@ -177,14 +178,14 @@
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
               <ul class="dropdown-menu">
-               {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
-               <li><a href="login">Login</a></li> 
-               <li><a href="register">Register</a></li> 
-               {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
+                {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
+                <li><a href="login">Login</a></li> 
+                <li><a href="register">Register</a></li> 
+                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
               </ul>
 
               @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
-                <li><a class="nav-link" href="usermanagement"><i class="fas fa-pencil-ruler"></i> <span>User Management</span></a></li>
+                <li><a class="nav-link" href="/usermanagement"><i class="fas fa-pencil-ruler"></i> <span>User Management</span></a></li>
               @endif
             </li>           
           </ul>
@@ -194,138 +195,88 @@
       <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div class="row">
-            <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="card card-statistic-2">
-                <div class="card-stats">
-                  <div class="card-stats-title">Order Statistics - 
-                    <div class="dropdown d-inline">
-                      <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                      <ul class="dropdown-menu dropdown-menu-sm">
-                        <li class="dropdown-title">Select Month</li>
-                        <li><a href="#" class="dropdown-item">January</a></li>
-                        <li><a href="#" class="dropdown-item">February</a></li>
-                        <li><a href="#" class="dropdown-item">March</a></li>
-                        <li><a href="#" class="dropdown-item">April</a></li>
-                        <li><a href="#" class="dropdown-item">May</a></li>
-                        <li><a href="#" class="dropdown-item">June</a></li>
-                        <li><a href="#" class="dropdown-item">July</a></li>
-                        <li><a href="#" class="dropdown-item active">August</a></li>
-                        <li><a href="#" class="dropdown-item">September</a></li>
-                        <li><a href="#" class="dropdown-item">October</a></li>
-                        <li><a href="#" class="dropdown-item">November</a></li>
-                        <li><a href="#" class="dropdown-item">December</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="card-stats-items">
-                    <div class="card-stats-item">
-                      <div class="card-stats-item-count">24</div>
-                      <div class="card-stats-item-label">General</div>
-                    </div>
-                    <div class="card-stats-item">
-                      <div class="card-stats-item-count">12</div>
-                      <div class="card-stats-item-label">Disability</div>
-                    </div>
-                    <div class="card-stats-item">
-                      <div class="card-stats-item-count">23</div>
-                      <div class="card-stats-item-label">Pregnant Mom</div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-icon shadow-primary bg-primary">
-                  <i class="fas fa-archive"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>Total Orders</h4>
-                  </div>
-                  <div class="card-body">
-                    59
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="card card-statistic-1">
-                <div class="card-stats">
-                <div class="card-stats-title">Order Statistics - 
-                  <div class="dropdown d-inline">
-                    <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                    <ul class="dropdown-menu dropdown-menu-sm">
-                      <li class="dropdown-title">Select Month</li>
-                      <li><a href="#" class="dropdown-item">January</a></li>
-                      <li><a href="#" class="dropdown-item">February</a></li>
-                      <li><a href="#" class="dropdown-item">March</a></li>
-                      <li><a href="#" class="dropdown-item">April</a></li>
-                      <li><a href="#" class="dropdown-item">May</a></li>
-                      <li><a href="#" class="dropdown-item">June</a></li>
-                      <li><a href="#" class="dropdown-item">July</a></li>
-                      <li><a href="#" class="dropdown-item active">August</a></li>
-                      <li><a href="#" class="dropdown-item">September</a></li>
-                      <li><a href="#" class="dropdown-item">October</a></li>
-                      <li><a href="#" class="dropdown-item">November</a></li>
-                      <li><a href="#" class="dropdown-item">December</a></li>
-                    </ul>
-                  </div>
-                </div>
-                </div>
-                <div class="card-icon bg-primary">
-                  <i class="far fa-user"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>Total Admin</h4>
-                  </div>
-                  <div class="card-body">
-                    10
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
-              <div class="card card-statistic-1">
-                <div class="card-stats">
-                  <div class="card-stats-title">Order Statistics - 
-                    <div class="dropdown d-inline">
-                      <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#" id="orders-month">August</a>
-                      <ul class="dropdown-menu dropdown-menu-sm">
-                        <li class="dropdown-title">Select Month</li>
-                        <li><a href="#" class="dropdown-item">January</a></li>
-                        <li><a href="#" class="dropdown-item">February</a></li>
-                        <li><a href="#" class="dropdown-item">March</a></li>
-                        <li><a href="#" class="dropdown-item">April</a></li>
-                        <li><a href="#" class="dropdown-item">May</a></li>
-                        <li><a href="#" class="dropdown-item">June</a></li>
-                        <li><a href="#" class="dropdown-item">July</a></li>
-                        <li><a href="#" class="dropdown-item active">August</a></li>
-                        <li><a href="#" class="dropdown-item">September</a></li>
-                        <li><a href="#" class="dropdown-item">October</a></li>
-                        <li><a href="#" class="dropdown-item">November</a></li>
-                        <li><a href="#" class="dropdown-item">December</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                  </div>
-                <div class="card-icon bg-danger">
-                  <i class="far fa-newspaper"></i>
-                </div>
-                <div class="card-wrap">
-                  <div class="card-header">
-                    <h4>News</h4>
-                  </div>
-                  <div class="card-body">
-                    42
-                  </div>
-                </div>
-              </div>
+          <div class="section-header">
+            <h1>Profile</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+              <div class="breadcrumb-item">Profile</div>
             </div>
           </div>
-        </div>
-      </footer>
-    </div>
-  </div>
-
+          <div class="col-12 col-md-12 col-lg-7">
+            <div class="card">
+              <form method="post" class="needs-validation" novalidate="">
+                <div class="card-header">
+                  <h4>Edit Profile</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">                               
+                      <div class="form-group col-md-6 col-12">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" value="Ujang" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the first name
+                        </div>
+                      </div>
+                      <div class="form-group col-md-6 col-12">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" value="Maman" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the last name
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-7 col-12">
+                        <label>Email</label>
+                        <input type="email" class="form-control" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the email
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <input type="number" class="form-control phone-number">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label>Photo</label>
+                        <input type="file" class="form-control" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the photo
+                        </div>
+                      </div>
+                      <div class="form-group col-6">
+                        <label>Address</label>
+                        <input type="text" class="form-control" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the address
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-12">
+                        <label>Bio</label>
+                        <textarea class="form-control summernote-simple">Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>.</textarea>
+                      </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                  <button class="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+   
   <!-- General JS Scripts -->
   <script src="{{ asset('style/dist/assets/modules/jquery.min.js')}}"></script>
   <script src="{{ asset('style/dist/assets/modules/popper.js')}}"></script>
@@ -348,5 +299,10 @@
   <!-- Template JS File -->
   <script src="{{ asset('style/dist/assets/js/scripts.js')}}"></script>
   <script src="{{ asset('style/dist/assets/js/custom.js')}}"></script>
+
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
+
 </html>
