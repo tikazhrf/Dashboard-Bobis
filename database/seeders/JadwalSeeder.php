@@ -16,13 +16,10 @@ class JadwalSeeder extends Seeder
     public function run()
     {
         DB::table('jadwals')->insert([
-            'code_bus' => '1A',
-            'origin' => 'ITS',
-            'destination' => 'UNAIR',
             'start_at' => '08:00',
             'end_at' => '20:00',
-            'duration_journey' => '10',
-            'operation_day' => ['Monday', 'Thursday', 'Wednesday', 'Friday', 'Saturday', 'Sunday']
+            'operation_day' => json_encode(['Monday', 'Thursday', 'Wednesday', 'Friday', 'Saturday', 'Sunday']),
+            'rutes_id' => 1
         ]);
     }
 }

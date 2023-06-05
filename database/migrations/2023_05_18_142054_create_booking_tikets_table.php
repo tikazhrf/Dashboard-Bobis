@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('booking_tikets', function (Blueprint $table) {
             $table->id();
+            $table->string('seat');
+            $table->foreignId('jenis_tikets_id')->constrained('jenis_tikets');
+            $table->foreignId('buses_id')->constrained('buses');
+            $table->foreignId('users_id')->constrained('users');
+            $table->unsignedBigInteger('penumpang_id')->nullable()->default(null);
             $table->timestamps();
         });
     }

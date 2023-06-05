@@ -26,7 +26,8 @@ class User extends Authenticatable
         'role',
         'image',
         'notelp',
-        'address'
+        'address',
+        'company_id',
     ];
 
     /**
@@ -47,4 +48,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function bookingTikets()
+    {
+        return $this->hasMany(BookingTiket::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

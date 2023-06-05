@@ -12,26 +12,40 @@ use function PHPUnit\Framework\returnSelf;
 
 class LoginController extends Controller
 {
-    public function login(){
+    public function index()
+    {
+        return view('welcome');
+    }
+
+    public function login()
+    {
         return view('partials.login');
     }
 
-    public function loginproses(Request $request){
-        if(Auth::attempt($request->only('email', 'password'))) {
-            return redirect('/');
+    public function loginproses(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('dashboard');
         }
 
-        return redirect('login');
-        //dd($request->all());
+        return redirect()->intended('login');
     }
 
-    public function register(){
+
+    public function register()
+    {
         return view('partials.register');
     }
 
-    public function registeruser(Request $request){
+    public function registeruser(Request $request)
+    {
         //dd($request->all());
-        User::create( [
+        User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'email' => $request->email,
@@ -43,24 +57,26 @@ class LoginController extends Controller
         return redirect('/login');
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return redirect('login');
     }
 
-    public function detailmanagement() {
+    public function detailmanagement()
+    {
 
         $data = User::all();
         //dd($data);
         return view('layout.user-management.detailmanagement', compact('data'));
     }
 
-    public function tampilmanagement($id) {
+    public function tampilmanagement($id)
+    {
 
         $data = User::find($id);
         //dd($data);
-        
+
         return view('layout.user-management.tampilmanagement', compact('data'));
     }
-
 }

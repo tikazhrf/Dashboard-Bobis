@@ -14,17 +14,23 @@ class Rute extends Model
     protected $table = "rutes";
     protected $primaryKey = "id";
     protected $fillable = [
-        'id','code_bus_id', 'bus_stops_id','price'
+        'price',
+        'origin_id',
+        'destination_id',
     ];
 
-    public function buses() {
-        
-        return $this->belongsTo(Bus::class, 'code_bus_id', 'id');
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class);
     }
 
-    public function busstops() {
-        
-        return $this->belongsToMany(BusStops::class, 'bus_stops_id', 'id');
+    public function origin()
+    {
+        return $this->belongsTo(BusStops::class);
     }
 
+    public function destination()
+    {
+        return $this->belongsTo(BusStops::class);
+    }
 }

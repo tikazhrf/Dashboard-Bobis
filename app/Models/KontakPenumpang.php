@@ -5,18 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JenisTiket extends Model
+class KontakPenumpang extends Model
 {
     use HasFactory;
-
-    protected $table = "jenis_tikets";
+    protected $table = "kontak_penumpang";
     protected $primaryKey = "id";
     protected $fillable = [
-        'ticket_category'
+        'email',
+        'phone',
     ];
 
     public function bookingTikets()
     {
         return $this->hasMany(BookingTiket::class);
+    }
+
+    public function penumpang()
+    {
+        return $this->hasMany(Penumpang::class);
     }
 }

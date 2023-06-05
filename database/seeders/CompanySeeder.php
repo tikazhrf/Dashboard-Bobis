@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class KategoriTiketSeeder extends Seeder
+class CompanySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,16 +15,16 @@ class KategoriTiketSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('jenis_tikets')->insert([
-            'ticket_category' => 'Disabilitas',
+        DB::table('company')->insert([
+            'company_name' => 'Trans Jakarta'
         ]);
 
-        DB::table('jenis_tikets')->insert([
-            'ticket_category' => 'Ibu Hamil',
+        DB::table('company')->insert([
+            'company_name' => 'Harapan Jaya'
         ]);
 
-        DB::table('jenis_tikets')->insert([
-            'ticket_category' => 'Umum',
+        DB::table('company')->insert([
+            'company_name' => 'Tiara Mas'
         ]);
     }
 }

@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('rutes', function (Blueprint $table) {
-            $table->foreignId('bus_stops_id');
+            $table->foreignId('origin_id')->constrained('bus_stops');
+            $table->foreignId('destination_id')->constrained('bus_stops');
         });
     }
 
@@ -26,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('rutes', function (Blueprint $table) {
-            $table->dropColumn('bus_stops_id');
+            $table->dropColumn('code_bus_id');
         });
     }
 };

@@ -15,4 +15,8 @@ class BusStops extends Model
         'id', 'bus_stops'
     ];
 
+    public function rutes()
+    {
+        return $this->hasMany(Rute::class);
+    }
 }
