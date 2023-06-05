@@ -57,7 +57,7 @@
         @endif
 
         @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-            <li><a href="#"><i class="fas fa-book"></i> <span>Booking Data</span></a></li>
+            <li><a href="{{ route('booking.data') }}"><i class="fas fa-book"></i> <span>Booking Data</span></a></li>
 
             <li class="menu-header">Report</li>
             <li><a href="#"><i class="fas fa-user"></i> <span>Finance</span></a></li>

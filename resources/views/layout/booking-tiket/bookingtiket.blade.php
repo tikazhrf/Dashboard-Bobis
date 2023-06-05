@@ -1,3 +1,6 @@
+@php
+    use App\Models\BookingTiket;
+@endphp
 @extends('app')
 
 @section('content')
@@ -15,8 +18,7 @@
                     <label for="inputFrom">From</label>
                     <input type="text" class="form-control" id="inputFrom" placeholder="Origin">
                 </div>
-                <div class="d-flex justify-content-center align-items-center fa fa-arrow-alt-circle-right">
-                </div>
+                <div class="d-flex justify-content-center align-items-center fa fa-arrow-alt-circle-right"></div>
                 <div class="form-group col-md-2">
                     <label for="inputTo">To</label>
                     <input type="text" class="form-control" id="inputTo" placeholder="Destination">
@@ -43,6 +45,17 @@
         </table>
     </div>
     @foreach ($dataBus as $item)
+        @php
+            $seatsArray = BookingTiket::where('buses_id', $item->id)
+                ->pluck('seat')
+                ->toArray();
+            $tiketBook = 0;
+            foreach ($seatsArray as $seats) {
+                $seats = explode(',', $seats);
+                $tiketBook += count($seats);
+            }
+            $availableSeats = $item->total_seats - $tiketBook;
+        @endphp
         <div class="card mb-2">
             <table class="table table-md mt-1">
                 <tr>
@@ -52,7 +65,7 @@
                         {{ $item->jadwals->rutes->destination->bus_stops }}</td>
                     <td class="col-2">{{ $item->total_seats }}</td>
                     <td class="col-2">{{ $item->jadwals->rutes->price }}</td>
-                    <td class="col-2">{{ $item->total_seats - $tiketBook }}</td>
+                    <td class="col-2">{{ $availableSeats }}</td>
                 </tr>
             </table>
             <hr class="m-0">
@@ -61,7 +74,7 @@
                     <td class="col-2">
                         <img src="{{ asset('busimage/' . $item->image) }}" alt="" style="width: 30px;">
                     </td>
-                    <td class="col-2">{{ $item->namapo }}</td>
+                    <td class="col-2">{{ $item->company->company_name }}</td>
                     <td class="col-2"></td>
                     <td class="col-2"></td>
                     <td class="col-2"></td>
@@ -79,7 +92,6 @@
                 @php
                     $totalSeats = $item->total_seats;
                     $selectedSeats = [];
-                    $bookedSeats = $seatsArray; // booked seats
                     $disabilitySeats = [3, 4, 5, 6]; // disability seats
                     $pregnantSeats = [26, 27, 28]; // pregnant seats
                     $rowCount = 4; // jumlah baris
@@ -103,7 +115,7 @@
                     }
                 @endphp
                 <div class="col-md-7">
-                    <div class="card">
+                    <div class="card" id="cardSeat_{{ $item->id }}">
                         <div class="card-body">
                             <div class="d-flex align-items-start justify-content-start">
                                 <img src="{{ asset('busimage/Driver.png') }}" class="mr-3" alt="">
@@ -119,7 +131,7 @@
                                                 @php
                                                     $seatLabel = chr(64 + $col) . $row;
                                                     $seatClass = '';
-                                                    if (in_array($seatLabel, $bookedSeats)) {
+                                                    if (in_array($seatLabel, $seatsArray)) {
                                                         $seatClass = 'unavailable';
                                                     } elseif (in_array($seat, $selectedSeats)) {
                                                         $seatClass = 'selected';
@@ -133,7 +145,8 @@
                                                     $seat++;
                                                 @endphp
 
-                                                <div class="seat {{ $seatClass }}" data-seat="{{ $seatLabel }}">
+                                                <div class="seat {{ $seatClass }}" data-seat="{{ $seatLabel }}"
+                                                    onclick="selectSeat('{{ $item->id }}', '{{ $seatLabel }}')">
                                                     {{ $seatLabel }}
                                                 </div>
                                             @endfor
@@ -171,7 +184,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="card">
+                    <div class="card" id="ticketInfo_{{ $item->id }}">
                         <div class="card-body">
                             <h3>Informasi Tiket</h3>
                             <div class="table-responsive">
@@ -187,12 +200,12 @@
                                         <tr>
                                             <td>Tiket Pesanan</td>
                                             <td>:</td>
-                                            <td id="selectedSeats"></td>
+                                            <td id="selectedSeats_{{ $item->id }}">Belum Memilih Kursi</td>
                                         </tr>
                                         <tr>
                                             <td>Total Harga Tiket</td>
                                             <td>:</td>
-                                            <td><span id="totalPrice"></span></td>
+                                            <td id="totalPrice_{{ $item->id }}">Rp. 0</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -201,11 +214,14 @@
                                 <form action="{{ route('booking.store') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="bus_id" value="{{ $item->id }}">
-                                    <input type="hidden" name="selected_seats" id="selectedSeatsInput">
-                                    <input type="hidden" name="seat_category_id" id="seatCategoryIdInput">
+                                    <input type="hidden" name="selected_seats"
+                                        id="selectedSeatsInput_{{ $item->id }}">
+                                    <input type="hidden" name="seat_category_id"
+                                        id="seatCategoryIdInput_{{ $item->id }}">
 
-                                    <button type="submit" class="btn btn-primary" id="selectSeatButton"
-                                        style="display: none;">Pesan Sekarang</button>
+                                    <button type="submit" class="btn btn-primary"
+                                        id="selectSeatButton_{{ $item->id }}" style="display: none;">Pesan
+                                        Sekarang</button>
                                 </form>
                             </div>
                         </div>
@@ -218,58 +234,85 @@
 
 @section('script')
     <script>
+        let selectedSeats = {};
+
+        function selectSeat(itemId, seatLabel) {
+            const seatElement = document.querySelector(`#seatMap_${itemId} .seat[data-seat='${seatLabel}']`);
+
+            if (seatElement.classList.contains('unavailable')) {
+                // Kursi tidak tersedia
+                return;
+            }
+
+            if (!selectedSeats[itemId]) {
+                selectedSeats[itemId] = [];
+            }
+
+            if (selectedSeats[itemId].includes(seatLabel)) {
+                // Hapus kursi jika sudah dipilih
+                selectedSeats[itemId] = selectedSeats[itemId].filter(seat => seat !== seatLabel);
+                seatElement.classList.remove('selected');
+            } else {
+                // Tambahkan kursi jika belum dipilih
+                selectedSeats[itemId].push(seatLabel);
+                seatElement.classList.add('selected');
+            }
+
+            updateSelectedSeats(itemId);
+            updateTotalPrice(itemId);
+        }
+
+
+        function updateSelectedSeats(itemId) {
+            const selectedSeatsElement = document.querySelector(`#selectedSeats_${itemId}`);
+
+            const selectedSeatsData = selectedSeats[itemId].map(seatLabel => {
+                let seatCategory = '';
+                const seatElement = document.querySelector(`#seatMap_${itemId} .seat[data-seat='${seatLabel}']`);
+                if (seatElement.classList.contains('disability')) {
+                    seatCategory = 'Disabilitas';
+                } else if (seatElement.classList.contains('pregnant')) {
+                    seatCategory = 'Ibu Hamil';
+                } else {
+                    seatCategory = 'Umum';
+                }
+                return {
+                    seat: seatLabel,
+                    category: seatCategory
+                };
+            });
+
+            const selectedSeatsLabels = selectedSeatsData.map(data => `${data.seat} - ${data.category}`);
+            selectedSeatsElement.innerHTML = selectedSeatsLabels.length > 0 ? selectedSeatsLabels.join(', ') :
+                'Belum Memilih Kursi';
+
+            const selectedSeatsInput = document.querySelector(`#selectedSeatsInput_${itemId}`);
+            const seatLabels = selectedSeatsData.map(seat => seat.seat);
+            selectedSeatsInput.value = JSON.stringify(seatLabels);
+
+            const seatCategoryIdInput = document.querySelector(`#seatCategoryIdInput_${itemId}`);
+            const seatCategories = selectedSeatsData.map(data => data.category);
+            seatCategoryIdInput.value = JSON.stringify(seatCategories);
+
+            const selectSeatButton = document.querySelector(`#selectSeatButton_${itemId}`);
+            selectSeatButton.style.display = selectedSeats[itemId].length > 0 ? 'block' : 'none';
+        }
+
+
+        function updateTotalPrice(itemId) {
+            const totalPriceElement = document.querySelector(`#totalPrice_${itemId}`);
+            const seatCategoryIdInput = document.querySelector(`#seatCategoryIdInput_${itemId}`);
+
+            // Perform calculation based on selected seats and seat category
+            const pricePerSeat = {{ $item->jadwals->rutes->price }};
+            const totalPrice = selectedSeats[itemId].length * pricePerSeat;
+
+            totalPriceElement.innerHTML = `Rp. ${totalPrice}`;
+        }
+
         function showSeatSelection(event, seatMapId) {
             event.preventDefault();
             $('#seatMap_' + seatMapId).slideToggle();
         }
-
-        $(document).ready(function() {
-            var seatPrice = {{ $item->jadwals->rutes->price }};
-            var totalPrice = 0;
-            var seatStatus = 'Belum Memilih Kursi';
-
-            $('#totalPrice').text(formatCurrency(totalPrice));
-            $('#selectedSeats').html(seatStatus);
-
-            $('.seat.available, .seat.disability, .seat.pregnant').click(function() {
-                $(this).toggleClass('selected');
-                var selectedSeats = $('.seat.selected').map(function() {
-                    return {
-                        seat: $(this).text().trim(),
-                        category: $(this).hasClass('disability') ? 'Disabilitas' : ($(this)
-                            .hasClass('pregnant') ? 'Ibu Hamil' : 'Umum')
-                    };
-                }).get();
-
-                var seatList = selectedSeats.map(function(seat) {
-                    return '<li class="list-group-item d-flex align-items-center px-0">' +
-                        seat.seat +
-                        '<span class="ml-2 badge bg-primary rounded-pill text-white">' +
-                        seat.category + '</span>' + '</li>';
-                }).join('');
-
-
-                if (selectedSeats.length > 0) {
-                    seatStatus = '<ul class="list-group list-group-flush">' + seatList + '</ul>';
-                    totalPrice = seatPrice * selectedSeats.length;
-                    $('#selectedSeatsInput').val(JSON.stringify(selectedSeats.map(seat => seat.seat)));
-                    $('#seatCategoryIdInput').val(JSON.stringify(selectedSeats.map(seat => seat.category)));
-                    $('#selectSeatButton').show();
-                } else {
-                    seatStatus = 'Belum Memilih Kursi';
-                    totalPrice = 0;
-                    $('#selectedSeatsInput').val('');
-                    $('#seatCategoryIdInput').val('');
-                    $('#selectSeatButton').hide();
-                }
-
-                $('#selectedSeats').html(seatStatus);
-                $('#totalPrice').text(formatCurrency(totalPrice));
-            });
-
-            function formatCurrency(value) {
-                return 'Rp ' + value.toLocaleString('id-ID');
-            }
-        });
     </script>
 @endsection

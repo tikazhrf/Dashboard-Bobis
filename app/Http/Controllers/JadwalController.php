@@ -7,17 +7,20 @@ use App\Models\Jadwal;
 use App\Models\Rute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class JadwalController extends Controller
 {
     public function jadwal(Request $request)
     {
 
+        $user = Auth::user();
+        $company_id = $user->company_id;
         if ($request->has('search')) {
             $data = Bus::where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(10);
             Session::put('halaman_url', request()->fullUrl());
         } else {
-            $data = Bus::paginate(10);
+            $data = Bus::where('company_id', $company_id)->paginate(10);
             Session::put('halaman_url', request()->fullUrl());
         }
         //dd($data);
@@ -26,7 +29,6 @@ class JadwalController extends Controller
 
     public function tambahjadwal()
     {
-
         $data = Bus::all();
         $data1 = Rute::all();
         return view('layout.jadwal.tambahjadwal', compact('data', 'data1'));

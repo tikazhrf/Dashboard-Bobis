@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth', 'hakakses:Superadmin,managementPO,Driver'
     Route::get('/dashboard', [LoginController::class, 'index'])->name('dashboard');
     Route::get('/rutebus', [RuteController::class, 'rutebus'])->name('rutebus');
     Route::get('/jadwal', [JadwalController::class, 'jadwal'])->name('jadwal');
+    Route::get('bookingdata', [BookingTiketController::class, 'bookingdata'])->name('booking.data');
     Route::get('bookingtiket', [BookingTiketController::class, 'bookingtiket'])->name('bookingtiket');
     Route::post('/booking/store', [BookingTiketController::class, 'bookingStore'])->name('booking.store');
     Route::get('penumpang/create', [BookingTiketController::class, 'createPenumpang'])->name('penumpang.create');

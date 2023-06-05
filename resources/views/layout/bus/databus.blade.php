@@ -47,7 +47,7 @@
                                     <th>Plate Number</th>
                                     <th>BPKB Expired</th>
                                     <th>Driver</th>
-                                    <th>Seat</th>
+                                    <th>Total Seat</th>
                                     <th>Action</th>
                                 </tr>
                                 @php
@@ -56,7 +56,7 @@
                                 @foreach ($data as $index => $row)
                                     <tr class="align-items-center">
                                         <th scope="row">{{ $index + $data->firstItem() }}</th>
-                                        <td>{{ $row->namapo }}</td>
+                                        <td>{{ $row->company->company_name }}</td>
                                         <td>
                                             <img src="{{ asset('busimage/' . $row->image) }}" alt=""
                                                 style="width: 100px;">
@@ -66,7 +66,7 @@
                                         <td>{{ $row->plate_number }}</td>
                                         <td>{{ $row->bpkb_expired }}</td>
                                         <td>{{ $row->driver }}</td>
-                                        <td>{{ $row->seat }}</td>
+                                        <td>{{ $row->total_seats }}</td>
                                         <td>
                                             <a href="/tampilbus/{{ $row->id }}"
                                                 class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>

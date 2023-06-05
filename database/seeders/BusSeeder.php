@@ -23,6 +23,19 @@ class BusSeeder extends Seeder
             'bpkb_expired' => '2023/10/12',
             'driver' => 'Suprapto',
             'total_seats' => '30',
+            'company_id' => 1,
+            'jadwals_id' => 1,
+        ]);
+
+        DB::table('buses')->insert([
+            'image' => '6306447.jpg',
+            'code_bus' => '2A',
+            'vin' => '420qwer90',
+            'plate_number' => 'W1238JR',
+            'bpkb_expired' => '2025/10/12',
+            'driver' => 'Yanto',
+            'total_seats' => '28',
+            'company_id' => 2,
             'jadwals_id' => 1,
         ]);
     }

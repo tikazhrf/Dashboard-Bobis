@@ -26,7 +26,8 @@ class User extends Authenticatable
         'role',
         'image',
         'notelp',
-        'address'
+        'address',
+        'company_id',
     ];
 
     /**
@@ -51,5 +52,10 @@ class User extends Authenticatable
     public function bookingTikets()
     {
         return $this->hasMany(BookingTiket::class);
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 }

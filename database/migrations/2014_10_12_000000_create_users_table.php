@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('password_confirm');
+            $table->foreignId('company_id')->constrained('company');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -35,4 +36,3 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
-?>

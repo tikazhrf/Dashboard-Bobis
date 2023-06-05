@@ -14,21 +14,23 @@ use Illuminate\Support\Facades\DB;
 
 class BookingTiketController extends Controller
 {
+    public function bookingdata()
+    {
+        $transactions = Transaction::all();
+        return view('layout.booking-tiket.bookingdata', compact('transactions'));
+    }
+
     public function bookingtiket()
     {
-        $dataBus = Bus::all();
-        $data = Bus::pluck('id')->toArray();
-        $seatsArray = BookingTiket::whereIn('buses_id', $data)->pluck('seat')->toArray();
+        $user = Auth::user();
+        $company_id = $user->company_id;
+        $dataBus = Bus::where('company_id', $company_id)->get();
 
-        $tiketBook = 0;
-        foreach ($seatsArray as $seats) {
-            $seats = explode(",", $seats);
-            $tiketBook += count($seats);
-        }
         $jenisTiket = JenisTiket::all();
 
-        return view('layout.booking-tiket.bookingtiket', compact('data', 'dataBus', 'tiketBook', 'seatsArray', 'jenisTiket'));
+        return view('layout.booking-tiket.bookingtiket', compact('dataBus', 'jenisTiket'));
     }
+
 
     public function bookingStore(Request $request)
     {
@@ -114,7 +116,7 @@ class BookingTiketController extends Controller
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.server_key');
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isProduction = config('midtrans.is_production');
         // Set sanitization on (default)
         \Midtrans\Config::$isSanitized = true;
         // Set 3DS transaction for credit card to true
@@ -138,6 +140,8 @@ class BookingTiketController extends Controller
         }
 
         $customerDetails = [
+            'first_name' => $bookingTikets[0]->penumpang->name,
+            'last_name' => '',
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
         ];
@@ -165,8 +169,8 @@ class BookingTiketController extends Controller
         $transaction->contact_id = $contact->id;
         $transaction->bus_id = $bookingTikets[0]['buses']['id'];
         $transaction->user_id = auth()->user()->id;
+        $transaction->status = 'Unpaid';
         $transaction->save();
-
         return redirect()->route('checkout', [
             'snapToken' => $snapToken,
             'transactionDetails' => $transactionDetails,
@@ -189,6 +193,18 @@ class BookingTiketController extends Controller
         return view('layout.booking-tiket.checkout', compact('snapToken', 'transactionDetails', 'items', 'customerDetails', 'transaction', 'bookingTikets'));
     }
 
+    public function callback(Request $request)
+    {
+        $serverKey = config('midtrans.server_key');
+        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+
+        if ($hashed == $request->signature_key) {
+            if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
+                Transaction::where('order_id', $request->order_id)->update(['status' => 'Paid']);
+            }
+        }
+    }
+
 
     public function invoice($id)
     {
@@ -196,17 +212,6 @@ class BookingTiketController extends Controller
         return view('layout.booking-tiket.invoice', compact('transaction'));
     }
 
-    public function callback(Request $request)
-    {
-        $serverKey = config('midtrans.server_key');
-        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
-        if ($hashed == $request->signature_key) {
-            if ($request->transaction_status == 'capture') {
-                $transaction = Transaction::find($request->order_id);
-                $transaction->update(['payment_status' => 'Paid']);
-            }
-        }
-    }
 
     public function tampilimage($id)
     {

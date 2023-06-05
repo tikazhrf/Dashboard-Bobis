@@ -14,10 +14,10 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3>Transaction Details</h3>
-                        @if ($transaction->payment_status == 'Paid')
-                            <h3 class="text-right text-success">{{ $transaction->payment_status }}</h3>
+                        @if ($transaction->status == 'Paid')
+                            <h3 class="text-right text-success">{{ $transaction->status }}</h3>
                         @else
-                            <h3 class="text-right text-danger">{{ $transaction->payment_status }}</h3>
+                            <h3 class="text-right text-danger">{{ $transaction->status }}</h3>
                         @endif
                     </div>
                     <hr>

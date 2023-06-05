@@ -26,6 +26,20 @@ class UserSeeder extends Seeder
             'image' => 'logo_bobus.png',
             'notelp' => '085607832167',
             'address' => 'Jl.Romokalisari',
+            'company_id' => 1
+        ]);
+
+        DB::table('users')->insert([
+            'first_name' => 'Azahra',
+            'last_name' => ' Tika',
+            'email' => 'azahra@gmail.com',
+            'password' => Hash::make('azahra'),
+            'password_confirm' => Hash::make('azahra'),
+            'role' => 'Superadmin',
+            'image' => 'logo_bobus.png',
+            'notelp' => '089765436782',
+            'address' => 'Jl.Sariroti',
+            'company_id' => 2
         ]);
     }
 }

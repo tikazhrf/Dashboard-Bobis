@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('bus_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('payment_status', ['Unpaid', 'Paid']);
+            $table->enum('status', ['Unpaid', 'Paid']);
             $table->timestamps();
 
             $table->foreign('contact_id')->references('id')->on('kontak_penumpang');
