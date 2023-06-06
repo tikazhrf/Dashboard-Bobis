@@ -19,6 +19,7 @@
                     <th scope="col">Bus</th>
                     <th scope="col">Total Ticket</th>
                     <th scope="col">Total Price</th>
+                    <th scope="col">Payment Type</th>
                     <th scope="col">Status</th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                         <td>{{ $transaction->bus->code_bus }}</td>
                         <td>{{ $transaction->total_ticket }}</td>
                         <td>{{ $transaction->total_price }}</td>
+                        <td>{{ $transaction->payment_type }}</td>
                         <td>{{ $transaction->status }}</td>
                     </tr>
                 @endforeach

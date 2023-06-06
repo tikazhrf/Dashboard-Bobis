@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\DetailManagement;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -39,7 +40,8 @@ class LoginController extends Controller
 
     public function register()
     {
-        return view('partials.register');
+        $companies = Company::all();
+        return view('partials.register', compact('companies'));
     }
 
     public function registeruser(Request $request)
@@ -48,6 +50,7 @@ class LoginController extends Controller
         User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'company_id' => $request->company,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'password_confirm' => bcrypt($request->password_confirm),
@@ -65,18 +68,25 @@ class LoginController extends Controller
 
     public function detailmanagement()
     {
-
-        $data = User::all();
-        //dd($data);
+        $data = User::all()->where('role', 'managementPO');
         return view('layout.user-management.detailmanagement', compact('data'));
+    }
+
+    public function detaildriver()
+    {
+        $data = User::all()->where('role', 'Driver');
+        return view('layout.user-management.detaildriver', compact('data'));
+    }
+
+    public function detailuser()
+    {
+        $data = User::all()->where('role', 'user');
+        return view('layout.user-management.detailuser', compact('data'));
     }
 
     public function tampilmanagement($id)
     {
-
         $data = User::find($id);
-        //dd($data);
-
         return view('layout.user-management.tampilmanagement', compact('data'));
     }
 }

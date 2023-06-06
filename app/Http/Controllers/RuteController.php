@@ -6,21 +6,35 @@ use App\Models\Bus;
 use App\Models\BusStops;
 use App\Models\Rute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class RuteController extends Controller
 {
     public function rutebus(Request $request)
     {
+        $user = Auth::user();
 
         if ($request->has('search')) {
-            $data = Rute::where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
+                ->join('buses', 'jadwals.id', '=', 'buses.id')
+                ->where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(10);
             Session::put('halaman_url', request()->fullUrl());
         } else {
-            $data = Rute::paginate(10);
-            Session::put('halaman_url', request()->fullUrl());
+            if ($user->role == 'Superadmin') {
+                $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
+                    ->join('buses', 'buses.jadwals_id', '=', 'jadwals.id')
+                    ->paginate(10);
+                Session::put('halaman_url', request()->fullUrl());
+            } else {
+                $company_id = $user->company_id;
+                $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
+                    ->join('buses', 'buses.jadwals_id', '=', 'jadwals.id')
+                    ->where('buses.company_id', $company_id)->paginate(5);
+                Session::put('halaman_url', request()->fullUrl());
+            }
         }
-        $data = Bus::paginate(10);
 
         return view('layout.rute.rutebus', compact('data'));
     }
@@ -46,12 +60,11 @@ class RuteController extends Controller
 
     public function tampilrute($id)
     {
-        $data = Rute::find($id);
-        $data1 = Bus::all();
+        $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
+            ->join('buses', 'jadwals.id', '=', 'buses.id')->find($id);
         $datarute = BusStops::all();
-        //dd($data);
 
-        return view('layout.rute.tampilrute', compact('data', 'data1', 'datarute'));
+        return view('layout.rute.tampilrute', compact('data', 'datarute'));
     }
 
     public function updaterute(Request $request, $id)

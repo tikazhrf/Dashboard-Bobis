@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('password_confirm');
-            $table->foreignId('company_id')->constrained('company');
+            $table->unsignedBigInteger('company_id')->from('company')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

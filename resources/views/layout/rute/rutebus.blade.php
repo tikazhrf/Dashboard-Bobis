@@ -9,11 +9,6 @@
         </div>
     </div>
     <div class="card-header-form">
-        {{-- @if ($message = Session::get('success'))
-            <div class="alert alert-success">
-              {{ $message }}
-            </div>
-            @endif --}}
         <div class="row">
             <div class="col">
                 <div class="card">
@@ -28,7 +23,6 @@
                                             <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                         </div>
                                         <a href="/tambahrute" class="btn btn-primary">Add Route</a>
-                                        {{-- Session::get('halaman_url') --}}
                                     </form>
                                 </div>
                             </form>
@@ -41,6 +35,7 @@
                                     <th>#</th>
                                     <th>Bus Code</th>
                                     <th>Origin</th>
+                                    <th>Destination</th>
                                     <th>Price</th>
                                     <th>Action</th>
                                 </tr>
@@ -51,14 +46,14 @@
                                     <tr>
                                         <th scope="row">{{ $no++ }}</th>
                                         <td>{{ $row->code_bus }}</td>
-                                        <td>{{ $row->jadwals->rutes->origin->bus_stops }}</td>
-                                        <td>{{ $row->jadwals->rutes->price }}</td>
+                                        <td>{{ $row->origin->bus_stops }}</td>
+                                        <td>{{ $row->destination->bus_stops }}</td>
+                                        <td>{{ $row->price }}</td>
                                         <td>
-                                            <a href="/tampilrute/{{ $row->jadwals->rutes->id }}"
+                                            <a href="/tampilrute/{{ $row->id }}"
                                                 class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
                                             <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                                data-id="{{ $row->jadwals->rutes->id }}"
-                                                data-nama="{{ $row->code_bus }}"></a>
+                                                data-id="{{ $row->id }}" data-nama="{{ $row->code_bus }}"></a>
                                         </td>
                                     </tr>
                                 @endforeach

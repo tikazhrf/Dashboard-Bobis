@@ -29,8 +29,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('partials.login');
-});
+    return view('welcome');
+})->middleware('auth');
 
 //LOGIN & REGISTER
 Route::controller(LoginController::class)->group(function () {
@@ -81,6 +81,12 @@ Route::group(['middleware' => ['auth', 'hakakses:Superadmin,managementPO']], fun
 
     //tiket
     Route::get('/kategoritiket', [JenisTiketController::class, 'kategoritiket'])->name('kategoritiket');
+    //User Management
+    Route::get('/usermanagement', [UserManagementController::class, 'usermanagement'])->name('usermanagement');
+    Route::get('/detailmanagement', [LoginController::class, 'detailmanagement'])->name('detailmanagement');
+    Route::get('/detaildriver', [LoginController::class, 'detaildriver'])->name('detaildriver');
+    Route::get('/detailuser', [LoginController::class, 'detailuser'])->name('detailuser');
+    Route::get('/tampilmanagement/{id}', [LoginController::class, 'tampilmanagement'])->name('tampilmanagement');
 });
 
 Route::group(['middleware' => ['auth', 'hakakses:Superadmin']], function () {
@@ -100,11 +106,6 @@ Route::get('/trackrutebus', [TrackBusController::class, 'trackrutebus'])->name('
 
 //Booking Tiket
 Route::get('/tampilimage/{id}', [BusController::class, 'tampilimage'])->name('tampilimage');
-
-//User Management
-Route::get('/usermanagement', [UserManagementController::class, 'usermanagement'])->name('usermanagement');
-Route::get('/detailmanagement', [LoginController::class, 'detailmanagement'])->name('detailmanagement');
-Route::get('/tampilmanagement/{id}', [LoginController::class, 'tampilmanagement'])->name('tampilmanagement');
 
 //All Rute
 Route::get('/busstops', [BusStopsController::class, 'busstops'])->name('busstops');

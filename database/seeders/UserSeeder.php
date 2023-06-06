@@ -39,7 +39,6 @@ class UserSeeder extends Seeder
             'image' => 'logo_bobus.png',
             'notelp' => '089765436782',
             'address' => 'Jl.Sariroti',
-            'company_id' => 2
         ]);
     }
 }
