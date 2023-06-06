@@ -15,13 +15,18 @@ class JadwalController extends Controller
     {
 
         $user = Auth::user();
-        $company_id = $user->company_id;
         if ($request->has('search')) {
             $data = Bus::where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(10);
             Session::put('halaman_url', request()->fullUrl());
         } else {
-            $data = Bus::where('company_id', $company_id)->paginate(10);
-            Session::put('halaman_url', request()->fullUrl());
+            if ($user->role == 'Superadmin') {
+                $data = Bus::paginate(10);
+                Session::put('halaman_url', request()->fullUrl());
+            } else {
+                $company_id = $user->company_id;
+                $data = Bus::where('company_id', $company_id)->paginate(10);
+                Session::put('halaman_url', request()->fullUrl());
+            }
         }
         //dd($data);
         return view('layout.jadwal.jadwal', compact('data'));

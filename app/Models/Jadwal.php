@@ -36,6 +36,6 @@ class Jadwal extends Model
 
     public function buses()
     {
-        return $this->belongsToMany(Bus::class);
+        return $this->hasMany(Bus::class);
     }
 }

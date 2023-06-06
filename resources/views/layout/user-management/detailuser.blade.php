@@ -2,16 +2,16 @@
 
 @section('content')
     <div class="section-header">
-        <h1>Detail Management PO</h1>
+        <h1>Detail User</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a href="/">Dashboard</a></div>
-            <div class="breadcrumb-item"><a>Detail Management PO</a></div>
+            <div class="breadcrumb-item"><a>Detail User</a></div>
         </div>
     </div>
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <h4>Detail Management PO</h4>
+                <h4>Detail User</h4>
                 <div class="card-header-form">
                     <form>
                         <div class="input-group">
@@ -20,7 +20,7 @@
                                 <div class="input-group-btn">
                                     <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                 </div>
-                                <a href="/tambahrute" class="btn btn-primary">Add Driver</a>
+                                <a href="/tambahrute" class="btn btn-primary">Add User</a>
                             </form>
                         </div>
                     </form>

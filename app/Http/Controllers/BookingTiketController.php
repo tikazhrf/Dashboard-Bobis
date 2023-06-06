@@ -23,9 +23,12 @@ class BookingTiketController extends Controller
     public function bookingtiket()
     {
         $user = Auth::user();
-        $company_id = $user->company_id;
-        $dataBus = Bus::where('company_id', $company_id)->get();
-
+        if ($user->role == 'Superadmin') {
+            $dataBus = Bus::all();
+        } else {
+            $company_id = $user->company_id;
+            $dataBus = Bus::where('company_id', $company_id)->get();
+        }
         $jenisTiket = JenisTiket::all();
 
         return view('layout.booking-tiket.bookingtiket', compact('dataBus', 'jenisTiket'));
@@ -199,8 +202,10 @@ class BookingTiketController extends Controller
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
 
         if ($hashed == $request->signature_key) {
-            if ($request->transaction_status == 'capture' or $request->transaction_status == 'settlement') {
-                Transaction::where('order_id', $request->order_id)->update(['status' => 'Paid']);
+            if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                Transaction::where('order_id', $request->order_id)->update(['status' => 'Paid', 'payment_type' => $request->payment_type]);
+            } elseif ($request->transaction_status == 'pending') {
+                Transaction::where('order_id', $request->order_id)->update(['status' => 'Pending', 'payment_type' => $request->payment_type]);
             }
         }
     }

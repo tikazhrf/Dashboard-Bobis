@@ -75,7 +75,7 @@
             </ul>
 
             @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-        <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>User
+        <li><a class="nav-link" href="{{ route('usermanagement') }}"><i class="fas fa-pencil-ruler"></i> <span>User
                     Management</span></a></li>
         @endif
         </li>

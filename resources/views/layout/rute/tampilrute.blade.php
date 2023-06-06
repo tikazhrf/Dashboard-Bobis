@@ -22,15 +22,6 @@
                                 </select>
                             </div>
                             <div class="form-group col-6">
-                                <label>Origin</label>
-                                <select class="custom-select" name="bus_stops_id">
-                                    <option value="{{ $data->bus_stops }}">{{ ucfirst($data->bus_stops) }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-6">
                                 <label>Price</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -41,6 +32,32 @@
                                     <input type="number" name="price" class="form-control currency"
                                         value="{{ $data->price }}">
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-6">
+                                <label>Origin</label>
+                                <select class="custom-select" name="origin_id">
+                                    <option value="{{ $data->origin->id }}">{{ ucfirst($data->origin->bus_stops) }}
+                                    </option>
+                                    @foreach ($datarute as $rute)
+                                        <option value="{{ $rute->id }}">{{ ucfirst($rute->bus_stops) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Destination</label>
+                                <select class="custom-select" name="destination_id">
+                                    <option value="{{ $data->destination->id }}">
+                                        {{ ucfirst($data->destination->bus_stops) }}
+                                    </option>
+                                    @foreach ($datarute as $rute)
+                                        <option value="{{ $rute->id }}">{{ ucfirst($rute->bus_stops) }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bus;
+use App\Models\Company;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,14 +14,19 @@ class BusController extends Controller
     public function databus(Request $request)
     {
         $user = Auth::user();
-        $company_id = $user->company_id;
 
         if ($request->has('search')) {
             $data = Bus::where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(5);
             Session::put('halaman_url', request()->fullUrl());
         } else {
-            $data = Bus::where('company_id', $company_id)->paginate(5);
-            Session::put('halaman_url', request()->fullUrl());
+            if ($user->role == 'Superadmin') {
+                $data = Bus::paginate(5);
+                Session::put('halaman_url', request()->fullUrl());
+            } else {
+                $company_id = $user->company_id;
+                $data = Bus::where('company_id', $company_id)->paginate(5);
+                Session::put('halaman_url', request()->fullUrl());
+            }
         }
 
         //dd($data);
@@ -29,7 +35,8 @@ class BusController extends Controller
 
     public function tambahbus()
     {
-        return view('layout.bus.tambahbus');
+        $companies = Company::all();
+        return view('layout.bus.tambahbus', compact('companies'));
     }
 
     public function insertbus(Request $request)
@@ -50,6 +57,7 @@ class BusController extends Controller
         $bus->driver = $request->driver;
         $bus->jadwals_id = 1;
         $bus->total_seats = $request->total_seats;
+        $bus->company = $request->company;
         $bus->company_id = Auth::user()->company_id;
         $bus->save();
         if ($request->hasFile('image')) {

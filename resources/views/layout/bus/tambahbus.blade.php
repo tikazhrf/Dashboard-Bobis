@@ -15,10 +15,18 @@
                     @csrf
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-6">
-                                <label>Company</label>
-                                <input type="text" name="namapo" class="form-control" required="">
-                            </div>
+                            @if (Auth::user()->role == 'Superadmin')
+                                <div class="form-group col-6">
+                                    <label for="company">Company</label>
+                                    <select class="custom-select" name="company">
+                                        <option selected>Select Company</option>
+                                        @foreach ($companies as $company)
+                                            <option value="{{ $company->id }}">{{ $company->company_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endif
                             <div class="form-group col-6">
                                 <label>Logo</label>
                                 <input type="file" name="image" class="form-control" required="">
