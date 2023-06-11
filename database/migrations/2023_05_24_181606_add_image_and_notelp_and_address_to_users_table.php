@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('image')->nullable();
-            $table->bigInteger('notelp');
-            $table->string('address');
+            $table->bigInteger('notelp')->nullable();
+            $table->string('address')->nullable();
         });
     }
 

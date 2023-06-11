@@ -98,6 +98,6 @@ class BusController extends Controller
         $data = Bus::find($id);
         $data->delete();
 
-        return redirect()->route('databus')->with('success1', 'Data bus successfully deleted');
+        return redirect()->route('databus')->with('success', 'Data bus successfully deleted');
     }
 }
