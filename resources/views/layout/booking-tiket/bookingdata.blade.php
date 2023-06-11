@@ -13,31 +13,39 @@
             <thead>
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">Order ID</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
+                    <th scope="col">Tanggal Pemesanan</th>
+                    <th scope="col">Seat</th>
+                    <th scope="col">Jenis Tiket</th>
                     <th scope="col">Bus</th>
-                    <th scope="col">Total Ticket</th>
-                    <th scope="col">Total Price</th>
-                    <th scope="col">Payment Type</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Penumpang</th>
+                    <th scope="col">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($transactions as $transaction)
+                @foreach ($booking as $book)
                     <tr>
                         <td>{{ $no++ }}</td>
-                        <td>{{ $transaction->order_id }}</td>
-                        <td>{{ $transaction->contact->email }}</td>
-                        <td>{{ $transaction->contact->phone }}</td>
-                        <td>{{ $transaction->bus->code_bus }}</td>
-                        <td>{{ $transaction->total_ticket }}</td>
-                        <td>{{ $transaction->total_price }}</td>
-                        <td>{{ $transaction->payment_type }}</td>
-                        <td>{{ $transaction->status }}</td>
+                        <td>{{ $book->created_at->format('l, d F Y') }}</td>
+                        <td>{{ $book->seat }}</td>
+                        <td>{{ $book->jenisTikets->ticket_category }}</td>
+                        <td>{{ $book->buses->code_bus }} - {{ $book->buses->company->company_name }}</td>
+                        @if ($book->penumpang)
+                            <td>{{ $book->penumpang->name }}</td>
+                        @else
+                            <td class="text-danger">Anda belum memasukkan data penumpang.</td>
+                        @endif
+                        <td><a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
+                                onclick="event.preventDefault(); showConfirmationModal({{ $book->id }});"></a>
+
+                            <form id="delete-form-{{ $book->id }}" action="{{ route('booking.delete', $book->id) }}"
+                                method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -46,4 +54,26 @@
 @endsection
 
 @section('script')
+    <script>
+        function showConfirmationModal(id) {
+            Swal.fire({
+                title: "Konfirmasi Penghapusan",
+                text: "Anda yakin ingin menghapus item ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+
+        @if (Session::has('success'))
+            toastr.success("{{ Session::get('success') }}")
+        @endif
+    </script>
 @endsection

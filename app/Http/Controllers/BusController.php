@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BusController extends Controller
 {
@@ -96,8 +97,13 @@ class BusController extends Controller
     public function deletebus($id)
     {
         $data = Bus::find($id);
-        $data->delete();
-
-        return redirect()->route('databus')->with('success1', 'Data bus successfully deleted');
+        if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO') {
+            $data->delete();
+            Alert::toast('Data bus berhasil dihapus!', 'warning')->persistent(false, false)->autoClose(3000);
+            return redirect()->route('databus');
+        } else {
+            Alert::toast('Oops, Anda Tidak Bisa Menghapus Data Ini!', 'error')->persistent(false, false)->autoClose(3000);
+            return redirect()->route('databus');
+        }
     }
 }

@@ -1,6 +1,11 @@
 @extends('app')
 
 @section('content')
+    @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            {{ $message }}
+        </div>
+    @endif
     <div class="section-header">
         <h1>Detail Driver</h1>
         <div class="section-header-breadcrumb">
@@ -51,7 +56,14 @@
                                 <td>
                                     <a href="/tampilmanagement/{{ $row->id }}"
                                         class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
-                                    <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"></a>
+                                    <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
+                                        onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+
+                                    <form id="delete-form-{{ $row->id }}"
+                                        action="{{ route('deleteuser', $row->id) }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -63,4 +75,26 @@
     </div>
 @endsection
 @section('script')
+    <script>
+        function showConfirmationModal(id) {
+            Swal.fire({
+                title: "Konfirmasi Penghapusan",
+                text: "Anda yakin ingin menghapus item ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+
+        @if (Session::has('success'))
+            toastr.success("{{ Session::get('success') }}")
+        @endif
+    </script>
 @endsection

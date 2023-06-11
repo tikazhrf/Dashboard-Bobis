@@ -11,8 +11,8 @@
             </a>
         </div>
 
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
-            <ul class="sidebar-menu">
+        <ul class="sidebar-menu">
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
                 <li class="dropdown active">
                     <a href="#" class="nav-link has-dropdown"><i
                             class="fas fa-fire"></i><span>Dashboard</span></a>
@@ -21,64 +21,55 @@
                                 Dashboard</a></li>
                     </ul>
                 </li>
-        @endif
+            @endif
 
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-            <li class="menu-header">Ticket</li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-            <li><a href="/bookingtiket"><i class="fas fa-columns"></i> <span>Ticket Booking</span></a>
-            </li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin')
-            <li><a href="/kategoritiket"><i class="fas fa-th"></i> <span>Ticket Category</span></a></li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
-            <li class="menu-header">Data</li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-            <li><a href="#"><i class="fas fa-user"></i> <span>Customer Data</span></a></li>
-            <li><a href="/databus"><i class="far fa-file-alt"></i><span>Bus</span></a></li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
-            <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
-            <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
-            <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin')
-            <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track
-                        Bus</span></a></li>
-        @endif
-
-        @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-            <li><a href="{{ route('booking.data') }}"><i class="fas fa-book"></i> <span>Booking Data</span></a></li>
-
-            <li class="menu-header">Report</li>
-            <li><a href="#"><i class="fas fa-user"></i> <span>Finance</span></a></li>
-        @endif
-
-        <li class="menu-header">Pages</li>
-        <li class="dropdown">
-            <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i>
-                <span>Auth</span></a>
-            <ul class="dropdown-menu">
-                {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
-                <li><a href="login">Login</a></li>
-                <li><a href="register">Register</a></li>
-                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
-            </ul>
 
             @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
-        <li><a class="nav-link" href="{{ route('usermanagement') }}"><i class="fas fa-pencil-ruler"></i> <span>User
-                    Management</span></a></li>
-        @endif
-        </li>
+                <li class="menu-header">Ticket</li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
+                <li><a href="/bookingtiket"><i class="fas fa-columns"></i> <span>Ticket Booking</span></a>
+                </li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin')
+                <li><a href="/kategoritiket"><i class="fas fa-th"></i> <span>Ticket Category</span></a></li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
+                <li class="menu-header">Data</li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
+                <li><a href="#"><i class="fas fa-user"></i> <span>Customer Data</span></a></li>
+                <li><a href="/databus"><i class="far fa-file-alt"></i><span>Bus</span></a></li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
+                <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+                <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
+                <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin')
+                <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track
+                            Bus</span></a></li>
+            @endif
+
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
+                <li><a href="{{ route('booking.data') }}"><i class="fas fa-book"></i> <span>Booking Data</span></a></li>
+
+                <li class="menu-header">Report</li>
+                <li><a href="{{ route('finance.index') }}"><i class="fas fa-user"></i> <span>Finance</span></a></li>
+            @endif
+
+            <li class="menu-header">Pages</li>
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
+                <li><a class="nav-link" href="{{ route('usermanagement') }}"><i class="fas fa-pencil-ruler"></i>
+                        <span>User
+                            Management</span></a></li>
+            @endif
         </ul>
     </aside>
 </div>

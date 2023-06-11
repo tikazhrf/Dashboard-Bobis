@@ -9,12 +9,11 @@
         </div>
     </div>
     <div class="card-header-form">
-
-        {{-- @if ($message = Session::get('success'))
-  <div class="alert alert-success">
-    {{ $message }}
-  </div>
-  @endif --}}
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+                {{ $message }}
+            </div>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -71,12 +70,19 @@
                                             <a href="/tampilbus/{{ $row->id }}"
                                                 class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
                                             <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                                data-id="{{ $row->id }}" data-nama="{{ $row->code_bus }}"></a>
+                                                onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+
+                                            <form id="delete-form-{{ $row->id }}"
+                                                action="{{ route('deletebus', $row->id) }}" method="POST"
+                                                style="display: none;">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
+                            </table>
                         </div>
-                        </table>
                     </div>
                 </div>
                 <div class="card-footer text-right">
@@ -93,29 +99,22 @@
 
 @section('script')
     <script>
-        $('.delete').click(function() {
-            var busid = $(this).attr('data-id');
-            var nama = $(this).attr('data-nama');
-            swal({
-                    title: "Are you sure?",
-                    text: "You will clear bus data with Code Bus " + nama + " ",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        window.location = "/deletebus/" + busid + ""
-                        swal("The data bus has been successfully deleted!", {
-                            icon: "success",
-                        });
-                    } else {
-                        swal({
-                            text: " " + nama + " is not deleted!"
-                        });
-                    }
-                });
-        });
+        function showConfirmationModal(id) {
+            Swal.fire({
+                title: "Konfirmasi Penghapusan",
+                text: "Anda yakin ingin menghapus item ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
 
         @if (Session::has('success'))
             toastr.success("{{ Session::get('success') }}")

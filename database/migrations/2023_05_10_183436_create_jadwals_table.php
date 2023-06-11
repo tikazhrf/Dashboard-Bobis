@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->time('start_at');
             $table->time('end_at');
-            $table->json('operation_day');
+            $table->string('operation_day');
             $table->foreignId('rutes_id')->constrained('rutes');
             $table->timestamps();
             $table->softDeletes();
