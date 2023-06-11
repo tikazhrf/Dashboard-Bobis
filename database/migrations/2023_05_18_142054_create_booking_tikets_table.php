@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('seat');
             $table->foreignId('jenis_tikets_id')->constrained('jenis_tikets');
             $table->foreignId('buses_id')->constrained('buses');
-            $table->foreignId('users_id')->constrained('users');
+            $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger('penumpang_id')->nullable()->default(null);
             $table->timestamps();
         });

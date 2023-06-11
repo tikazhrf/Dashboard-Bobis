@@ -44,8 +44,12 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
+
     <div id="app">
+
         <div class="main-wrapper main-wrapper-1">
+
             @include('partials.navbar')
 
             @include('partials.sidebar')
@@ -82,6 +86,7 @@
     <!-- Template JS File -->
     <script src="{{ asset('style/dist/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('style/dist/assets/js/custom.js') }}"></script>
+    <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
 
     @yield('script')
 </body>

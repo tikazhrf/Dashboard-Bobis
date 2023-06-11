@@ -11,13 +11,24 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class BookingTiketController extends Controller
 {
     public function bookingdata()
     {
-        $transactions = Transaction::all();
-        return view('layout.booking-tiket.bookingdata', compact('transactions'));
+        $booking = BookingTiket::all();
+        return view('layout.booking-tiket.bookingdata', compact('booking'));
+    }
+
+    public function deleteBooking($id)
+    {
+        $booking = BookingTiket::find($id);
+        if ($booking && Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO') {
+            $booking->delete();
+            Alert::toast('Data booking berhasil dihapus!', 'success')->persistent(false, false)->autoClose(3000);
+            return redirect('bookingdata');
+        }
     }
 
     public function bookingtiket()
