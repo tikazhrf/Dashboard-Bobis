@@ -18,14 +18,9 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/components.css')}}">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
-
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -183,10 +178,10 @@
             <li class="dropdown">
               <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Auth</span></a>
               <ul class="dropdown-menu">
-               {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
-               <li><a href="login">Login</a></li> 
-               <li><a href="register">Register</a></li> 
-               {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
+                {{-- <li><a href="auth-forgot-password.html">Forgot Password</a></li>  --}}
+                <li><a href="login">Login</a></li> 
+                <li><a href="register">Register</a></li> 
+                {{-- <li><a href="auth-reset-password.html">Reset Password</a></li>  --}}
               </ul>
 
               @if (auth()->user()->role == "Superadmin" || auth()->user()->role == "Management PO")
@@ -201,104 +196,86 @@
       <div class="main-content">
         <section class="section">
           <div class="section-header">
-            <h1>Track Bus</h1>
+            <h1>Profile</h1>
             <div class="section-header-breadcrumb">
               <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-              <div class="breadcrumb-item"><a>Track Bus</a></div>
+              <div class="breadcrumb-item">Profile</div>
             </div>
           </div>
-          <div class="row">
-            <div class="col">
-              <div class="card">
+          <div class="col-12 col-md-12 col-lg-7">
+            <div class="card">
+              <form method="post" class="needs-validation" novalidate="">
                 <div class="card-header">
-                  <h4>Route Bus</h4>
-                  <div class="card-header-form">
-                  <form>
-                    <div class="input-group">
-                      <form action="rutebus" method="get">
-                      <input type="search" class="form-control" placeholder="Search" name="search">
-                      <div class="input-group-btn">
-                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
-                      </div>
-                      {{-- Session::get('halaman_url') --}}
-                      </form>
-                    </div>
-                  </form>
-                  </div>
+                  <h4>Edit Profile</h4>
                 </div>
-                <div class="card-body p-0">
-                  <div class="table-responsive">
-                    <table class="table table-striped table-md">
-                      <tr>
-                        <th>#</th>
-                        <th>Origin</th>
-                        <th>Destination</th>
-                        <th>Action</th>
-                      </tr>
-                      @php
-                          $no = 1;   
-                      @endphp
-                      @foreach ($data as $index => $row)
-                      <tr>
-                        <th scope="row">{{ $index + $data->firstItem() }}</th>
-                        <td>{{ $row->origin }}</td>
-                        <td>{{ $row->destination }}</td>
-                        <td>
-                          <a onclick="myMap" id="demo" href="/trackrutebus/{{ $row->id }}" class="btn btn-warning rounded-circle fa fa-map"></a>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </table>
-                  </div>
+                <div class="card-body">
+                    <div class="row">                               
+                      <div class="form-group col-md-6 col-12">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" value="Ujang" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the first name
+                        </div>
+                      </div>
+                      <div class="form-group col-md-6 col-12">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" value="Maman" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the last name
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-7 col-12">
+                        <label>Email</label>
+                        <input type="email" class="form-control" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the email
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label>Phone Number</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <input type="number" class="form-control phone-number">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label>Photo</label>
+                        <input type="file" class="form-control" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the photo
+                        </div>
+                      </div>
+                      <div class="form-group col-6">
+                        <label>Address</label>
+                        <input type="text" class="form-control" required="">
+                        <div class="invalid-feedback">
+                          Please fill in the address
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-12">
+                        <label>Bio</label>
+                        <textarea class="form-control summernote-simple">Ujang maman is a superhero name in <b>Indonesia</b>, especially in my family. He is not a fictional character but an original hero in my family, a hero for his children and for his wife. So, I use the name as a user in this template. Not a tribute, I'm just bored with <b>'John Doe'</b>.</textarea>
+                      </div>
+                    </div>
                 </div>
                 <div class="card-footer text-right">
-                  <nav class="d-inline-block">
-                    <ul class="pagination mb-0">
-                      {{ $data->links() }}  
-                    </ul>
-                  </nav>
+                  <button class="btn btn-primary">Save Changes</button>
                 </div>
-              </div>
+              </form>
             </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12">
-                <div class="card">
-                  <div class="card-header">
-                    <h4>Map</h4>
-                  </div>
-                  <div class="card-body">
-                    <div id="map" data-height="400"></div>
-                    <script>
-
-                      const map = L.map('map').setView([-7.279466, 112.790158], 13);
-
-                      const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        maxZoom: 19,
-                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                      }).addTo(map);
-
-                      L.Routing.control({
-                        waypoints: [
-                          L.latLng(-7.279466, 112.790158),
-                          L.latLng(-7.265655, 112.757587)
-                        ],
-                        routeWhileDragging: true
-                      }).addTo(map);
-
-                    </script>
-                    <script>
-                      function myMap() {
-                        document.getElementById("demo").innerHTML = "Hello World";
-                      }
-                      </script>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
+          </div>
+        </section>
+      </div>
    
   <!-- General JS Scripts -->
   <script src="{{ asset('style/dist/assets/modules/jquery.min.js')}}"></script>
@@ -323,5 +300,9 @@
   <script src="{{ asset('style/dist/assets/js/scripts.js')}}"></script>
   <script src="{{ asset('style/dist/assets/js/custom.js')}}"></script>
 
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
+
 </html>

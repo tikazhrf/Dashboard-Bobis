@@ -19,10 +19,13 @@
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('style/dist/assets/css/components.css')}}">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
 
 <!-- Start GA -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+
 
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -213,30 +216,6 @@
                 </div>
                 <div class="card-body">
                   <div id="map" data-height="400"></div>
-                  <script>
-
-                    const map = L.map('map').setView([-7.279466, 112.790158], 13);
-
-                    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                      maxZoom: 19,
-                      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    }).addTo(map);
-
-                    const marker = L.marker([-7.279466, 112.790158]).addTo(map)
-                      .bindPopup('Halte Bundaran ITS').openPopup();
-
-                    const popup = L.popup();
-
-                    function onMapClick(e) {
-                      popup
-                        .setLatLng(e.latlng)
-                        .setContent(`Halte Bundaran ITS ${e.latlng.toString()}`)
-                        .openOn(map);
-                    }
-
-                    map.on('click', onMapClick);
-
-                  </script>
                 </div>
               </div>
             </div>
@@ -266,6 +245,28 @@
   <!-- Template JS File -->
   <script src="{{ asset('style/dist/assets/js/scripts.js')}}"></script>
   <script src="{{ asset('style/dist/assets/js/custom.js')}}"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 
 </body>
 </html>
+
+<script>
+
+  var map = L.map('map').setView([-7.279466, 112.790158], 13);
+
+  var tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  var marker = L.marker([-7.279466, 112.790158]).addTo(map);
+    
+  L.Routing.control({
+  waypoints: [
+    L.latLng(-7.279466, 112.790158),
+    L.latLng(-7.265687, 112.757576)
+  ]
+}).addTo(map);
+
+</script>
