@@ -18,7 +18,7 @@ class JadwalSeeder extends Seeder
         DB::table('jadwals')->insert([
             'start_at' => '08:00',
             'end_at' => '20:00',
-            'operation_day' => json_encode(['Monday', 'Thursday', 'Wednesday', 'Friday', 'Saturday', 'Sunday']),
+            'operation_day' => json_encode(['monday', 'thursday', 'wednesday', 'friday', 'saturday', 'sunday']),
             'rutes_id' => 1
         ]);
     }

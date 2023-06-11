@@ -6,6 +6,7 @@ use App\Http\Controllers\BusController;
 use App\Http\Controllers\DetailManagement;
 use App\Http\Controllers\DetailManagementController;
 use App\Http\Controllers\DetailPOController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JenisTiketController;
 use App\Http\Controllers\LoginController;
@@ -27,11 +28,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
-
 //LOGIN & REGISTER
 Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
@@ -44,16 +40,23 @@ Route::controller(LoginController::class)->group(function () {
 
 //ROUTE GROUP
 Route::group(['middleware' => ['auth', 'hakakses:Superadmin,managementPO,Driver']], function () {
+    Route::get('/', function () {
+        return redirect('dashboard');
+    });
     Route::get('/dashboard', [LoginController::class, 'index'])->name('dashboard');
     Route::get('/rutebus', [RuteController::class, 'rutebus'])->name('rutebus');
     Route::get('/jadwal', [JadwalController::class, 'jadwal'])->name('jadwal');
     Route::get('bookingdata', [BookingTiketController::class, 'bookingdata'])->name('booking.data');
+    Route::delete('/deletebooking/{id}', [BookingTiketController::class, 'deleteBooking'])->name('booking.delete');
     Route::get('bookingtiket', [BookingTiketController::class, 'bookingtiket'])->name('bookingtiket');
     Route::post('/booking/store', [BookingTiketController::class, 'bookingStore'])->name('booking.store');
     Route::get('penumpang/create', [BookingTiketController::class, 'createPenumpang'])->name('penumpang.create');
     Route::post('/penumpang/store', [BookingTiketController::class, 'storePenumpang'])->name('penumpang.store');
     Route::get('checkout', [BookingTiketController::class, 'checkout'])->name('checkout');
     Route::get('/invoice/{id}', [BookingTiketController::class, 'invoice'])->name('invoice');
+    Route::resources([
+        'finance' => FinanceController::class,
+    ]);
 });
 
 Route::group(['middleware' => ['auth', 'hakakses:Superadmin,managementPO']], function () {
@@ -63,30 +66,32 @@ Route::group(['middleware' => ['auth', 'hakakses:Superadmin,managementPO']], fun
     Route::post('/insertbus', [BusController::class, 'insertbus'])->name('insertbus');
     Route::get('/tampilbus/{id}', [BusController::class, 'tampilbus'])->name('tampilbus');
     Route::post('/updatebus/{id}', [BusController::class, 'updatebus'])->name('updatebus');
-    Route::get('/deletebus/{id}', [BusController::class, 'deletebus'])->name('deletebus');
+    Route::delete('/deletebus/{id}', [BusController::class, 'deletebus'])->name('deletebus');
 
     //Rute
     Route::get('/tambahrute', [RuteController::class, 'tambahrute'])->name('tambahrute');
     Route::post('/insertrute', [RuteController::class, 'insertrute'])->name('insertrute');
     Route::get('/tampilrute/{id}', [RuteController::class, 'tampilrute'])->name('tampilrute');
     Route::post('/updaterute/{id}', [RuteController::class, 'updaterute'])->name('updaterute');
-    Route::get('/deleterute/{id}', [RuteController::class, 'deleterute'])->name('deleterute');
+    Route::delete('/deleterute/{id}', [RuteController::class, 'deleterute'])->name('deleterute');
 
     //jadwal
     Route::get('/tambahjadwal', [JadwalController::class, 'tambahjadwal'])->name('tambahjadwal');
     Route::post('/insertjadwal', [JadwalController::class, 'insertjadwal'])->name('insertjadwal');
     Route::get('/tampiljadwal/{id}', [JadwalController::class, 'tampiljadwal'])->name('tampiljadwal');
     Route::post('/updatejadwal/{id}', [JadwalController::class, 'updatejadwal'])->name('updatejadwal');
-    Route::get('/deletejadwal/{id}', [JadwalController::class, 'deletejadwal'])->name('deletejadwal');
+    Route::delete('/deletejadwal/{id}', [JadwalController::class, 'deletejadwal'])->name('deletejadwal');
 
     //tiket
     Route::get('/kategoritiket', [JenisTiketController::class, 'kategoritiket'])->name('kategoritiket');
+
     //User Management
     Route::get('/usermanagement', [UserManagementController::class, 'usermanagement'])->name('usermanagement');
     Route::get('/detailmanagement', [LoginController::class, 'detailmanagement'])->name('detailmanagement');
     Route::get('/detaildriver', [LoginController::class, 'detaildriver'])->name('detaildriver');
     Route::get('/detailuser', [LoginController::class, 'detailuser'])->name('detailuser');
     Route::get('/tampilmanagement/{id}', [LoginController::class, 'tampilmanagement'])->name('tampilmanagement');
+    Route::delete('/deleteuser/{id}', [UserManagementController::class, 'deleteuser'])->name('deleteuser');
 });
 
 Route::group(['middleware' => ['auth', 'hakakses:Superadmin']], function () {

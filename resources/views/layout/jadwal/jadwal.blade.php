@@ -65,53 +65,51 @@
                                         @endforeach
                                     </td>
                                     <td>
-                                        <a href="/tampiljadwal/{{ $row->id }}"
-                                            class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
                                         <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                            data-id="{{ $row->id }}" data-nama="{{ $row->code_bus }}"></a>
+                                            onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+
+                                        <form id="delete-form-{{ $row->id }}"
+                                            action="{{ route('deletejadwal', $row->id) }}" method="POST"
+                                            style="display: none;">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
+                        </table>
                     </div>
-                    </table>
                 </div>
             </div>
-            <div class="card-footer text-right">
+            {{-- <div class="card-footer text-right">
                 <nav class="d-inline-block">
                     <ul class="pagination mb-0">
                         {{ $data->links() }}
                     </ul>
                 </nav>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection
 
 @section('script')
     <script>
-        $('.delete').click(function() {
-            var jadwalid = $(this).attr('data-id');
-            var nama = $(this).attr('data-nama');
-            swal({
-                    title: "Are you sure?",
-                    text: "You will delete Schedule with Bus Code " + nama + " ",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        window.location = "/deletejadwal/" + jadwalid + ""
-                        swal("The Schedule has been successfully deleted!", {
-                            icon: "success3",
-                        });
-                    } else {
-                        swal({
-                            text: " " + nama + " is not deleted!"
-                        });
-                    }
-                });
-        });
+        function showConfirmationModal(id) {
+            Swal.fire({
+                title: "Konfirmasi Penghapusan",
+                text: "Anda yakin ingin menghapus item ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
 
         @if (Session::has('success3'))
             toastr.success("{{ Session::get('success3') }}")

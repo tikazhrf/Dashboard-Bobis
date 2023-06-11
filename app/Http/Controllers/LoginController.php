@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookingTiket;
+use App\Models\Bus;
 use App\Models\Company;
 use App\Models\DetailManagement;
+use App\Models\Jadwal;
+use App\Models\JenisTiket;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -15,7 +22,45 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('welcome');
+        $transaction = count(Transaction::all());
+        $paid = Transaction::where('status', 'Paid')->count();
+        $unpaid = Transaction::where('status', 'Unpaid')->count();
+        $pending = Transaction::where('status', 'Pending')->count();
+        $totalAkun = User::where('company_id', Auth::user()->company_id)->count();
+        $companies = Company::pluck('company_name');
+        $totalBalance = Transaction::where('status', 'paid')->sum('total_price');
+        $today = Carbon::now()->format('l');
+
+        $buses = Bus::join('jadwals', 'buses.jadwals_id', '=', 'jadwals.id')
+            ->where('jadwals.operation_day', 'like', '%"' . $today . '"%')
+            ->get();
+
+        $tiketTersedia = [];
+
+        $tiketTersedia = [];
+
+        foreach ($buses as $bus) {
+            $jumlahTiketTerjual = BookingTiket::where('buses_id', $bus->id)->count();
+            $jumlahTiketTersedia = $bus->total_seats - $jumlahTiketTerjual;
+            if ($jumlahTiketTersedia > 0) {
+                $tiketTersedia[] = [
+                    'bus_id' => $bus->id,
+                    'code_bus' => $bus->code_bus,
+                    'company_name' => $bus->company->company_name,
+                    'jumlah_tersedia' => $jumlahTiketTersedia
+                ];
+            }
+        }
+
+        $tiketTerjual = [];
+
+        foreach ($companies as $company) {
+            $tiketTerjual[] = BookingTiket::whereHas('buses.company', function ($query) use ($company) {
+                $query->where('company_name', $company);
+            })->count();
+        }
+
+        return view('welcome', compact('totalAkun', 'transaction', 'companies', 'tiketTerjual', 'totalBalance', 'paid', 'unpaid', 'pending', 'buses', 'tiketTersedia'));
     }
 
     public function login()
