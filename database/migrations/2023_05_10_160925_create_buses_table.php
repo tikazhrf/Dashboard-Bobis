@@ -22,8 +22,7 @@ return new class extends Migration
             $table->date('bpkb_expired');
             $table->string('driver');
             $table->integer('total_seats');
-            $table->foreignId('company_id')->constrained('company');
-            $table->foreignId('jadwals_id')->constrained('jadwals');
+            $table->foreignId('company_id')->constrained('company')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

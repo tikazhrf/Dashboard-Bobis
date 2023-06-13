@@ -58,7 +58,7 @@
                                             onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
 
                                         <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('deleteuser', $row->id) }}" method="POST"
+                                            action="{{ route('deletebusstops', $row->id) }}" method="POST"
                                             style="display: none;">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}

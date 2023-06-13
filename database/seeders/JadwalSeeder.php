@@ -19,6 +19,7 @@ class JadwalSeeder extends Seeder
             'start_at' => '08:00',
             'end_at' => '20:00',
             'operation_day' => json_encode(['monday', 'thursday', 'wednesday', 'friday', 'saturday', 'sunday']),
+            'buses_id' => 1,
             'rutes_id' => 1
         ]);
     }

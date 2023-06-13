@@ -24,7 +24,6 @@ class BusSeeder extends Seeder
             'driver' => 'Suprapto',
             'total_seats' => '30',
             'company_id' => 1,
-            'jadwals_id' => 1,
         ]);
 
         DB::table('buses')->insert([
@@ -36,7 +35,6 @@ class BusSeeder extends Seeder
             'driver' => 'Yanto',
             'total_seats' => '28',
             'company_id' => 2,
-            'jadwals_id' => 1,
         ]);
     }
 }

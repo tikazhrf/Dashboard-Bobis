@@ -17,23 +17,20 @@
                         <div class="row">
                             <div class="form-group col">
                                 <label>Bus Code</label>
-                                <select class="custom-select" name="code_bus">
-                                    <option value="{{ $data->code_bus }}">{{ ucfirst($data->code_bus) }}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-6">
-                                <label>Origin</label>
-                                <select class="custom-select" name="origin">
-                                    <option value="{{ $data->origin }}">{{ ucfirst($data->origin) }}</option>
+                                <select class="custom-select" name="buses_id">
+                                    <option value="{{ $data->buses_id }}" selected>{{ $data->buses->code_bus }}</option>
+                                    @foreach ($data2 as $row)
+                                        <option value="{{ $row->id }}">{{ $row->code_bus }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-6">
-                                <label>Destination</label>
-                                <select class="custom-select" name="destination">
-                                    <option value="{{ $data->destination }}">{{ ucfirst($data->destination) }}</option>
+                                <label>Rute</label>
+                                <select class="custom-select" name="rutes_id">
+                                    <option selected>Select Origin</option>
+                                    @foreach ($data1 as $row)
+                                        <option value="{{ $row->id }}">{{ $row->origin->bus_stops }} - {{ $row->destination->bus_stops }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

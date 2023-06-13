@@ -26,8 +26,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('contact_id')->references('id')->on('kontak_penumpang');
-            $table->foreign('bus_id')->references('id')->on('buses');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('bus_id')->references('id')->on('buses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

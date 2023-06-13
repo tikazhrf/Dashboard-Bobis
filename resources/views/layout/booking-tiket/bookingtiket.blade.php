@@ -44,7 +44,7 @@
             </tr>
         </table>
     </div>
-    @foreach ($dataBus as $item)
+    @foreach ($dataJadwal as $item)
         @php
             $seatsArray = BookingTiket::where('buses_id', $item->id)
                 ->pluck('seat')
@@ -54,17 +54,17 @@
                 $seats = explode(',', $seats);
                 $tiketBook += count($seats);
             }
-            $availableSeats = $item->total_seats - $tiketBook;
+            $availableSeats = $item->buses->total_seats - $tiketBook;
         @endphp
         <div class="card mb-2">
             <table class="table table-md mt-1">
                 <tr>
-                    <td class="col-2">{{ $item->jadwals->start_at }}</td>
-                    <td class="col-4">{{ $item->jadwals->rutes->origin->bus_stops }} <i
+                    <td class="col-2">{{ $item->start_at }}</td>
+                    <td class="col-4">{{ $item->rutes->origin->bus_stops }} <i
                             class="fa-solid fa-chevron-right mx-5"></i>
-                        {{ $item->jadwals->rutes->destination->bus_stops }}</td>
-                    <td class="col-2">{{ $item->total_seats }}</td>
-                    <td class="col-2">{{ $item->jadwals->rutes->price }}</td>
+                        {{ $item->rutes->destination->bus_stops }}</td>
+                    <td class="col-2">{{ $item->buses->total_seats }}</td>
+                    <td class="col-2">{{ $item->rutes->price }}</td>
                     <td class="col-2">{{ $availableSeats }}</td>
                 </tr>
             </table>
@@ -74,7 +74,7 @@
                     <td class="col-2">
                         <img src="{{ asset('busimage/' . $item->image) }}" alt="" style="width: 30px;">
                     </td>
-                    <td class="col-2">{{ $item->company->company_name }}</td>
+                    <td class="col-2">{{ $item->buses->company->company_name }}</td>
                     <td class="col-2"></td>
                     <td class="col-2"></td>
                     <td class="col-2"></td>
@@ -90,7 +90,7 @@
         <div class="card seat-map p-5" id="seatMap_{{ $item->id }}" style="display: none; background-color: #DBDBDB;">
             <div class="row align-items-center justify-content-center">
                 @php
-                    $totalSeats = $item->total_seats;
+                    $totalSeats = $item->buses->total_seats;
                     $selectedSeats = [];
                     $disabilitySeats = [3, 4, 5, 6]; // disability seats
                     $pregnantSeats = [26, 27, 28]; // pregnant seats
@@ -193,8 +193,8 @@
                                         <tr>
                                             <td>Rute</td>
                                             <td>:</td>
-                                            <td>{{ $item->jadwals->rutes->origin->bus_stops }}<i
-                                                    class="fa-solid fa-chevron-right mx-2"></i>{{ $item->jadwals->rutes->destination->bus_stops }}
+                                            <td>{{ $item->rutes->origin->bus_stops }}<i
+                                                    class="fa-solid fa-chevron-right mx-2"></i>{{ $item->rutes->destination->bus_stops }}
                                             </td>
                                         </tr>
                                         <tr>
@@ -213,10 +213,11 @@
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <form action="{{ route('booking.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="bus_id" value="{{ $item->id }}">
-                                    <input type="hidden" name="selected_seats"
+                                    <input hidden name="bus_id" value="{{ $item->buses_id }}">
+                                    <input hidden name="jadwals_id" value="{{ $item->id }}">
+                                    <input hidden name="selected_seats"
                                         id="selectedSeatsInput_{{ $item->id }}">
-                                    <input type="hidden" name="seat_category_id"
+                                    <input hidden name="seat_category_id"
                                         id="seatCategoryIdInput_{{ $item->id }}">
 
                                     <button type="submit" class="btn btn-primary"
@@ -304,7 +305,7 @@
             const seatCategoryIdInput = document.querySelector(`#seatCategoryIdInput_${itemId}`);
 
             // Perform calculation based on selected seats and seat category
-            const pricePerSeat = {{ $item->jadwals->rutes->price }};
+            const pricePerSeat = {{ $item->rutes->price }};
             const totalPrice = selectedSeats[itemId].length * pricePerSeat;
 
             totalPriceElement.innerHTML = `Rp. ${totalPrice}`;

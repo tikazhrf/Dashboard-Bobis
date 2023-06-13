@@ -29,9 +29,8 @@ class LoginController extends Controller
         $totalAkun = User::where('company_id', Auth::user()->company_id)->count();
         $companies = Company::pluck('company_name');
         $totalBalance = Transaction::where('status', 'paid')->sum('total_price');
-        $today = Carbon::now()->format('l');
-
-        $buses = Bus::join('jadwals', 'buses.jadwals_id', '=', 'jadwals.id')
+        $today = Carbon::now()->setTimezone('Asia/Jakarta')->format('l');
+        $buses = Jadwal::join('buses', 'jadwals.buses_id', '=', 'buses.id')
             ->where('jadwals.operation_day', 'like', '%"' . $today . '"%')
             ->get();
 
@@ -45,8 +44,8 @@ class LoginController extends Controller
             if ($jumlahTiketTersedia > 0) {
                 $tiketTersedia[] = [
                     'bus_id' => $bus->id,
-                    'code_bus' => $bus->code_bus,
-                    'company_name' => $bus->company->company_name,
+                    'code_bus' => $bus->buses->code_bus,
+                    'company_name' => $bus->buses->company->company_name,
                     'jumlah_tersedia' => $jumlahTiketTersedia
                 ];
             }

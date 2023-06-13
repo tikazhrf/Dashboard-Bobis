@@ -20,7 +20,7 @@ class JadwalController extends Controller
             Session::put('halaman_url', request()->fullUrl());
         } else {
             if ($user->role == 'Superadmin') {
-                $data = Bus::paginate(10);
+                $data = Jadwal::paginate(10);
                 Session::put('halaman_url', request()->fullUrl());
             } else {
                 $company_id = $user->company_id;
@@ -57,8 +57,9 @@ class JadwalController extends Controller
     public function tampiljadwal($id)
     {
         $data = Jadwal::find($id);
-        $data1 = Bus::all();
-        $data2 = Rute::all();
+        $data1 = Rute::all();
+
+        $data2 = Bus::all();
         //dd($data);
 
         return view('layout.jadwal.tampiljadwal', compact('data', 'data1', 'data2'));

@@ -54,17 +54,19 @@
                             @foreach ($data as $row)
                                 <tr class="align-items-center">
                                     <th scope="row">{{ $no++ }}</th>
-                                    <td>{{ $row->code_bus }}</td>
-                                    <td>{{ $row->jadwals->rutes->origin->bus_stops }}</td>
-                                    <td>{{ $row->jadwals->rutes->destination->bus_stops }}</td>
-                                    <td>{{ $row->jadwals->start_at }}</td>
-                                    <td>{{ $row->jadwals->end_at }}</td>
+                                    <td>{{ $row->buses->code_bus }}</td>
+                                    <td>{{ $row->rutes->origin->bus_stops }}</td>
+                                    <td>{{ $row->rutes->destination->bus_stops }}</td>
+                                    <td>{{ $row->start_at }}</td>
+                                    <td>{{ $row->end_at }}</td>
                                     <td>
-                                        @foreach ($row->jadwals->operation_day as $name)
+                                        @foreach ($row->operation_day as $name)
                                             {{ $name }},
                                         @endforeach
                                     </td>
                                     <td>
+                                        <a href="{{ route('tampiljadwal', $row->id) }}"
+                                            class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
                                         <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
                                             onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
 

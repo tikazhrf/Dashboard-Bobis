@@ -33,7 +33,6 @@
                             <table class="table table-striped table-md">
                                 <tr>
                                     <th>#</th>
-                                    <th>Bus Code</th>
                                     <th>Origin</th>
                                     <th>Destination</th>
                                     <th>Price</th>
@@ -45,15 +44,22 @@
                                 @foreach ($data as $row)
                                     <tr>
                                         <th scope="row">{{ $no++ }}</th>
-                                        <td>{{ $row->code_bus }}</td>
                                         <td>{{ $row->origin->bus_stops }}</td>
                                         <td>{{ $row->destination->bus_stops }}</td>
                                         <td>{{ $row->price }}</td>
                                         <td>
                                             <a href="/tampilrute/{{ $row->id }}"
                                                 class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
+
                                             <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                                data-id="{{ $row->id }}" data-nama="{{ $row->code_bus }}"></a>
+                                            onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+
+                                        <form id="delete-form-{{ $row->id }}"
+                                            action="{{ route('deleterute', $row->id) }}" method="POST"
+                                            style="display: none;">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                        </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -75,29 +81,22 @@
 
 @section('script')
     <script>
-        $('.delete').click(function() {
-            var ruteid = $(this).attr('data-id');
-            var nama = $(this).attr('data-nama');
-            swal({
-                    title: "Are you sure?",
-                    text: "You will clear route with Code Bus " + nama + " ",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        window.location = "/deleterute/" + ruteid + ""
-                        swal("The route has been successfully deleted!", {
-                            icon: "success",
-                        });
-                    } else {
-                        swal({
-                            text: " " + nama + " is not deleted!"
-                        });
-                    }
-                });
-        });
+        function showConfirmationModal(id) {
+            Swal.fire({
+                title: "Konfirmasi Penghapusan",
+                text: "Anda yakin ingin menghapus item ini?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Hapus",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
 
         @if (Session::has('success'))
             toastr.success("{{ Session::get('success') }}")

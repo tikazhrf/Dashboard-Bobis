@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
             KategoriTiketSeeder::class,
             BusStopSeeder::class,
             RuteSeeder::class,
-            JadwalSeeder::class,
             BusSeeder::class,
+            JadwalSeeder::class,
         ]);
     }
 }

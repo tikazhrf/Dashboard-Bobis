@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('rutes', function (Blueprint $table) {
-            $table->foreignId('origin_id')->constrained('bus_stops');
-            $table->foreignId('destination_id')->constrained('bus_stops');
+            $table->foreignId('origin_id')->constrained('bus_stops')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('destination_id')->constrained('bus_stops')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

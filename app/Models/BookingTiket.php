@@ -14,7 +14,7 @@ class BookingTiket extends Model
     protected $fillable = [
         'seat',
         'jenis_tikets_id',
-        'buses_id',
+        'jadwals_id',
         'users_id',
         'penumpang_id'
     ];
@@ -22,6 +22,11 @@ class BookingTiket extends Model
     public function buses()
     {
         return $this->belongsTo(Bus::class, 'buses_id');
+    }
+
+    public function jadwals()
+    {
+        return $this->belongsTo(Jadwal::class);
     }
 
     public function rute()

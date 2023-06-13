@@ -54,7 +54,7 @@
                             @foreach ($penumpang->bookingTikets as $bookingTiket)
                                 <tr>
                                     <td>{{ $bookingTiket->id }}</td>
-                                    <td>{{ $bookingTiket->buses->jadwals->rutes->price }}</td>
+                                    <td>{{ $bookingTiket->jadwals->rutes->price }}</td>
                                     <td>1</td>
                                     <td>{{ $bookingTiket->seat }}</td>
                                     <td>{{ $penumpang->name }}</td>

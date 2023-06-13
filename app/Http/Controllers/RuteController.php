@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class RuteController extends Controller
 {
@@ -17,21 +19,15 @@ class RuteController extends Controller
         $user = Auth::user();
 
         if ($request->has('search')) {
-            $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
-                ->join('buses', 'jadwals.id', '=', 'buses.id')
-                ->where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(10);
+            $data = Rute::paginate(10);
             Session::put('halaman_url', request()->fullUrl());
         } else {
             if ($user->role == 'Superadmin') {
-                $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
-                    ->join('buses', 'buses.jadwals_id', '=', 'jadwals.id')
-                    ->paginate(10);
+                $data = Rute::paginate(10);
                 Session::put('halaman_url', request()->fullUrl());
             } else {
                 $company_id = $user->company_id;
-                $data = Rute::join('jadwals', 'rutes.id', '=', 'jadwals.rutes_id')
-                    ->join('buses', 'buses.jadwals_id', '=', 'jadwals.id')
-                    ->where('buses.company_id', $company_id)->paginate(5);
+                $data = Rute::paginate(10);
                 Session::put('halaman_url', request()->fullUrl());
             }
         }
@@ -82,8 +78,13 @@ class RuteController extends Controller
     public function deleterute($id)
     {
         $data = Rute::find($id);
-        $data->delete();
-
-        return redirect()->route('rutebus')->with('success', 'Route successfully deleted');
+        if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO') {
+            $data->delete();
+            Alert::toast('Data rute berhasil dihapus!', 'warning')->persistent(false, false)->autoClose(3000);
+            return redirect()->route('rutebus');
+        } else {
+            Alert::toast('Oops, Anda Tidak Bisa Menghapus Data Ini!', 'error')->persistent(false, false)->autoClose(3000);
+            return redirect()->route('rutebus');
+        }
     }
 }

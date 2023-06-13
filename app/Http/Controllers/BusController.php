@@ -56,10 +56,11 @@ class BusController extends Controller
         $bus->plate_number = $request->plate_number;
         $bus->bpkb_expired = $request->bpkb_expired;
         $bus->driver = $request->driver;
-        $bus->jadwals_id = 1;
         $bus->total_seats = $request->total_seats;
-        $bus->company = $request->company;
-        $bus->company_id = Auth::user()->company_id;
+        if(Auth::user()->role !== 'Superadmin') {
+            $bus->company_id = Auth::user()->company_id;
+        }
+        $bus->company_id = $request->company;
         $bus->save();
         if ($request->hasFile('image')) {
             $request->file('image')->move('busimage/', $request->file('image')->getClientOriginalName());
@@ -72,15 +73,25 @@ class BusController extends Controller
     public function tampilbus($id)
     {
         $data = Bus::find($id);
-        //dd($data);
+        $companies = Company::all();
 
-        return view('layout.bus.tampilbus', compact('data'));
+        return view('layout.bus.tampilbus', compact('data', 'companies'));
     }
 
     public function updatebus(Request $request, $id)
     {
         $data = Bus::find($id);
-        $data->update($request->all());
+        $data->code_bus = $request->code_bus;
+        $data->vin = $request->vin;
+        $data->plate_number = $request->plate_number;
+        $data->bpkb_expired = $request->bpkb_expired;
+        $data->driver = $request->driver;
+        $data->total_seats = $request->total_seats;
+        if(Auth::user()->role !== 'Superadmin') {
+            $data->company_id = Auth::user()->company_id;
+        }
+        $data->company_id = $request->company;
+        $data->save();
         if (session('halaman_url')) {
             return redirect(session('halaman_url'))->with('success', 'Data bus successfully updated');
         }

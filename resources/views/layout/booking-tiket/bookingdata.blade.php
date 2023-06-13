@@ -31,7 +31,7 @@
                         <td>{{ $book->created_at->format('l, d F Y') }}</td>
                         <td>{{ $book->seat }}</td>
                         <td>{{ $book->jenisTikets->ticket_category }}</td>
-                        <td>{{ $book->buses->code_bus }} - {{ $book->buses->company->company_name }}</td>
+                        <td>{{ $book->jadwals->buses->code_bus }} - {{ $book->jadwals->buses->company->company_name }}</td>
                         @if ($book->penumpang)
                             <td>{{ $book->penumpang->name }}</td>
                         @else

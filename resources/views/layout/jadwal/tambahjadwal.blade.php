@@ -17,31 +17,19 @@
                         <div class="row">
                             <div class="form-group col">
                                 <label>Bus Code</label>
-                                <select class="custom-select" name="code_bus">
+                                <select class="custom-select" name="buses_id">
                                     <option selected>Select Bus Code</option>
                                     @foreach ($data as $row)
-                                        <option value="{{ $row->code_bus }}">{{ $row->code_bus }}</option>
+                                        <option value="{{ $row->id }}">{{ $row->code_bus }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="form-group col-6">
-                                <label>Origin</label>
-                                <select class="custom-select" name="origin">
+                                <label>Rute</label>
+                                <select class="custom-select" name="rutes_id">
                                     <option selected>Select Origin</option>
                                     @foreach ($data1 as $row)
-                                        <option value="{{ $row->origin }}">{{ $row->origin }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group col-6">
-                                <label>Destination</label>
-                                <select class="custom-select" name="destination">
-                                    <option selected>Select Destination</option>
-                                    @foreach ($data1 as $row)
-                                        <option value="{{ $row->destination }}">{{ $row->destination }}</option>
+                                        <option value="{{ $row->id }}">{{ $row->origin->bus_stops }} - {{ $row->destination->bus_stops }}</option>
                                     @endforeach
                                 </select>
                             </div>

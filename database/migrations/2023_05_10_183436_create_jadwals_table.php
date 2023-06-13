@@ -18,7 +18,8 @@ return new class extends Migration
             $table->time('start_at');
             $table->time('end_at');
             $table->string('operation_day');
-            $table->foreignId('rutes_id')->constrained('rutes');
+            $table->foreignId('buses_id')->constrained('buses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('rutes_id')->constrained('rutes')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

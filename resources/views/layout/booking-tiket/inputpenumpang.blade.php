@@ -64,11 +64,11 @@
                             <div class="d-flex">
                                 <h5 class="mb-0 mr-2">Total Amount:</h5>
                                 <h5 class="mb-0">Rp.
-                                    {{ $bookingTikets[0]->buses->jadwals->rutes->price * count($bookingTikets) }}
+                                    {{ $bookingTikets[0]->jadwals->rutes->price * count($bookingTikets) }}
                                 </h5>
                             </div>
                             <input type="hidden" name="total_price"
-                                value="{{ $bookingTikets[0]->buses->jadwals->rutes->price * count($bookingTikets) }}">
+                                value="{{ $bookingTikets[0]->jadwals->rutes->price * count($bookingTikets) }}">
                             <button type="submit" class="btn btn-primary">Proceed to Pay</button>
                         </div>
                     </div>
@@ -83,13 +83,13 @@
                         </div>
                         <hr>
                         <p class="mb-0">Departure Date:</p>
-                        <p>{{ $bookingTikets[0]->buses->jadwals->start_at }}</p>
+                        <p>{{ $bookingTikets[0]->jadwals->start_at }}</p>
                         <p class="mb-0">From:</p>
-                        <p>{{ $bookingTikets[0]->buses->jadwals->rutes->origin->bus_stops }}</p>
+                        <p>{{ $bookingTikets[0]->jadwals->rutes->origin->bus_stops }}</p>
                         <p class="mb-0">To:</p>
-                        <p>{{ $bookingTikets[0]->buses->jadwals->rutes->destination->bus_stops }}</p>
+                        <p>{{ $bookingTikets[0]->jadwals->rutes->destination->bus_stops }}</p>
                         <p class="mb-0">Bus:</p>
-                        <p>{{ $bookingTikets[0]->buses->code_bus }}</p>
+                        <p>{{ $bookingTikets[0]->code_bus }}</p>
                         <p class="mb-0">Seat Number:</p>
                         <ol style="padding-inline-start: 15px;">
                             @foreach ($selectedSeats as $selectedSeat)
@@ -97,7 +97,7 @@
                             @endforeach
                         </ol>
                         <p class="mb-0">Price 1 Ticket</p>
-                        <p>{{ $bookingTikets[0]->buses->jadwals->rutes->price }}</p>
+                        <p>{{ $bookingTikets[0]->jadwals->rutes->price }}</p>
                     </div>
                 </div>
             </div>

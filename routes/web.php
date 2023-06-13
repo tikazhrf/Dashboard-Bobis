@@ -118,7 +118,7 @@ Route::get('/tambahbusstops', [BusStopsController::class, 'tambahbusstops'])->na
 Route::post('/insertbusstops', [BusStopsController::class, 'insertbusstops'])->name('insertbusstops');
 Route::get('/tampilbusstops/{id}', [BusStopsController::class, 'tampilbusstops'])->name('tampilbusstops');
 Route::post('/updatebusstops/{id}',[BusStopsController::class, 'updatebusstops'])->name('updatebusstops');
-Route::get('/deletebusstops/{id}',[BusStopsController::class, 'deletebusstops'])->name('deletebusstops');
+Route::delete('/deletebusstops/{id}',[BusStopsController::class, 'deletebusstops'])->name('deletebusstops');
 
 
 //Finance
@@ -128,5 +128,4 @@ Route::get('/revenue', [RevenueController::class, 'revenue'])->name('revenue');
 //Profil
 Route::get('/profile', [ProfilController::class, 'profile'])->name('profile');
 Route::get('/editprofile', [ProfilController::class, 'editprofile'])->name('editprofile');
-Route::post('/updatebusstops/{id}', [BusStopsController::class, 'updatebusstops'])->name('updatebusstops');
-Route::get('/deletebusstops/{id}', [BusStopsController::class, 'deletebusstops'])->name('deletebusstops');
+

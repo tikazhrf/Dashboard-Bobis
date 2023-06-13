@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('age');
-            $table->foreignId('kontak_penumpang_id')->constrained('kontak_penumpang');
+            $table->foreignId('kontak_penumpang_id')->constrained('kontak_penumpang')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

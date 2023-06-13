@@ -16,7 +16,8 @@ class Jadwal extends Model
         'start_at',
         'end_at',
         'operation_day',
-        'rutes_id'
+        'buses_id',
+        'rutes_id',
     ];
 
     public function setOperationDayAttribute($value)
@@ -36,6 +37,6 @@ class Jadwal extends Model
 
     public function buses()
     {
-        return $this->hasMany(Bus::class);
+        return $this->belongsTo(Bus::class);
     }
 }

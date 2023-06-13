@@ -16,19 +16,19 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-6">
-                                <label>Bus Code</label>
-                                <select class="custom-select" name="code_bus_id">
-                                    <option selected>Select Bus Code</option>
-                                    @foreach ($data as $row)
-                                        <option value="{{ $row->id }}">{{ $row->code_bus }}</option>
+                                <label>Origin</label>
+                                <select class="custom-select" name="origin_id">
+                                    <option selected>Select Origin</option>
+                                    @foreach ($datarute as $row)
+                                        <option value="{{ $row->id }}">{{ $row->bus_stops }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group col-6">
-                                <label>Origin</label>
-                                <select class="custom-select" name="bus_stops_id">
-                                    <option selected>Select Origin</option>
-                                    @foreach ($data as $row)
+                                <label>Destination</label>
+                                <select class="custom-select" name="destination_id">
+                                    <option selected>Select Destination</option>
+                                    @foreach ($datarute as $row)
                                         <option value="{{ $row->id }}">{{ $row->bus_stops }}</option>
                                     @endforeach
                                 </select>
