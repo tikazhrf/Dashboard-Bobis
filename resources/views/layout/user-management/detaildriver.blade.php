@@ -16,6 +16,8 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
+                <a href="{{ route('usermanagement') }}" class="btn btn-primary mr-3"><i class="fa-solid fa-arrow-left"></i>
+                    Back</a>
                 <h4>Detail Driver</h4>
                 <div class="card-header-form">
                     <form>
@@ -25,7 +27,6 @@
                                 <div class="input-group-btn">
                                     <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                 </div>
-                                <a href="/tambahrute" class="btn btn-primary">Add Driver</a>
                             </form>
                         </div>
                     </form>
@@ -35,20 +36,27 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-md">
                         <tr>
-                            <th>#</th>
-                            <th>Name</th>
+                            <th>No</th>
                             <th>Image</th>
+                            <th>Name</th>
                             <th>Email</th>
                             <th>No. Telp</th>
                             <th>Alamat</th>
                             <th>Role</th>
                             <th>Action</th>
                         </tr>
+                        @php
+                            $no = 1;
+                        @endphp
                         @foreach ($data as $row)
                             <tr>
-                                <th scope="row">{{ $row->id }}</th>
+                                <th scope="row">{{ $no++ }}</th>
+                                <td>
+                                    <img class="img-fluid border rounded-circle"
+                                        style="object-fit: cover; width: 40px; height: 40px;"
+                                        src="{{ asset('style/dist/assets/img/' . $row->image) }}" alt="" />
+                                </td>
                                 <td>{{ $row->first_name }} {{ $row->last_name }}</td>
-                                <td>{{ $row->image }}</>
                                 <td>{{ $row->email }}</td>
                                 <td>{{ $row->notelp }}</td>
                                 <td>{{ $row->address }}</td>

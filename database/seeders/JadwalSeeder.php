@@ -22,5 +22,13 @@ class JadwalSeeder extends Seeder
             'buses_id' => 1,
             'rutes_id' => 1
         ]);
+
+        DB::table('jadwals')->insert([
+            'start_at' => '08:00',
+            'end_at' => '18:00',
+            'operation_day' => json_encode(['monday', 'thursday', 'wednesday', 'friday']),
+            'buses_id' => 2,
+            'rutes_id' => 1
+        ]);
     }
 }

@@ -12,7 +12,7 @@ class BusStops extends Model
     protected $table = "bus_stops";
     protected $primaryKey = "id";
     protected $fillable = [
-        'id', 'bus_stops'
+        'id', 'bus_stops', 'latitude', 'longitude'
     ];
 
     public function rutes()

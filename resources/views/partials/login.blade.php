@@ -92,7 +92,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="mt-5 text-muted text-center">
+                        <div class="my-5 text-muted text-center">
                             Don't have an account? <a href="/register">Create One</a>
                         </div>
                     </div>

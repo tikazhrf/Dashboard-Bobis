@@ -35,11 +35,12 @@ class BookingTiketController extends Controller
     public function bookingtiket()
     {
         $user = Auth::user();
-        if ($user->role == 'Superadmin') {
+        if ($user->role == 'Superadmin' || $user->role == 'user') {
             $dataJadwal = Jadwal::all();
         } else {
-            $company_id = $user->company_id;
-            $dataJadwal = Jadwal::where('company_id', $company_id)->get();
+            $dataJadwal = Jadwal::whereHas('buses', function ($query) {
+                $query->where('company_id', Auth::user()->company_id);
+            })->get();
         }
         $jenisTiket = JenisTiket::all();
 
@@ -47,55 +48,55 @@ class BookingTiketController extends Controller
     }
 
 
-        public function bookingStore(Request $request)
-        {
-            $selectedSeats = json_decode($request->input('selected_seats'));
-            $seatCategories = json_decode($request->input('seat_category_id'));
-            $busId = $request->input('bus_id');
-            $jadwalsId = $request->input('jadwals_id');
+    public function bookingStore(Request $request)
+    {
+        $selectedSeats = json_decode($request->input('selected_seats'));
+        $seatCategories = json_decode($request->input('seat_category_id'));
+        $busId = $request->input('bus_id');
+        $jadwalsId = $request->input('jadwals_id');
 
-            $bookingTikets = [];
-            $selectedSeatsByBookingId = [];
+        $bookingTikets = [];
+        $selectedSeatsByBookingId = [];
 
-            foreach ($selectedSeats as $index => $seat) {
-                $category = $seatCategories[$index] ?? null;
-                if ($category) {
-                    $jenisTiket = JenisTiket::where('ticket_category', $category)->first();
+        foreach ($selectedSeats as $index => $seat) {
+            $category = $seatCategories[$index] ?? null;
+            if ($category) {
+                $jenisTiket = JenisTiket::where('ticket_category', $category)->first();
 
-                    if ($jenisTiket) {
-                        // Simpan data ke dalam database
-                        $booking = new BookingTiket();
-                        $booking->seat = $seat;
-                        $booking->buses_id = $busId;
-                        $booking->users_id = Auth::user()->id;
-                        $booking->jadwals_id = $jadwalsId;
-                        $booking->jenis_tikets_id = $jenisTiket->id;
-                        $booking->save();
+                if ($jenisTiket) {
+                    // Simpan data ke dalam database
+                    $booking = new BookingTiket();
+                    $booking->seat = $seat;
+                    $booking->buses_id = $busId;
+                    $booking->users_id = Auth::user()->id;
+                    $booking->jadwals_id = $jadwalsId;
+                    $booking->jenis_tikets_id = $jenisTiket->id;
+                    $booking->save();
 
-                        $bookingTikets[] = $booking;
-                        $selectedSeatsByBookingId[$booking->id] = [
-                            'seat_numbers' => $seat,
-                            'seat_type' => $jenisTiket->ticket_category,
-                        ];
-                    }
+                    $bookingTikets[] = $booking;
+                    $selectedSeatsByBookingId[$booking->id] = [
+                        'seat_numbers' => $seat,
+                        'seat_type' => $jenisTiket->ticket_category,
+                    ];
                 }
             }
-            return redirect()->route('penumpang.create', [
-                'bookingTikets' => $bookingTikets,
-                'selectedSeats' => $selectedSeatsByBookingId
-            ]);
         }
+        return redirect()->route('penumpang.create', [
+            'bookingTikets' => $bookingTikets,
+            'selectedSeats' => $selectedSeatsByBookingId
+        ]);
+    }
 
-        public function createPenumpang(Request $request)
-        {
-            $selectedSeats = $request->input('selectedSeats', []);
-            $seatNumbers = array_column($selectedSeats, 'seat_numbers');
-            $seatType = array_column($selectedSeats, 'seat_type');
+    public function createPenumpang(Request $request)
+    {
+        $selectedSeats = $request->input('selectedSeats', []);
+        $seatNumbers = array_column($selectedSeats, 'seat_numbers');
+        $seatType = array_column($selectedSeats, 'seat_type');
 
-            $bookingTikets = BookingTiket::whereIn('id', array_keys($selectedSeats))->get();
+        $bookingTikets = BookingTiket::whereIn('id', array_keys($selectedSeats))->get();
 
-            return view('layout.booking-tiket.inputpenumpang', compact('selectedSeats', 'bookingTikets'));
-        }
+        return view('layout.booking-tiket.inputpenumpang', compact('selectedSeats', 'bookingTikets'));
+    }
 
     public function storePenumpang(Request $request)
     {

@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="card card-primary">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-center">
                                 <h4>Register</h4>
                             </div>
 
@@ -55,15 +55,16 @@
                                         <div class="form-group col-6">
                                             <label for="first_name">First Name</label>
                                             <input id="first_name" type="text" class="form-control" name="first_name"
-                                                autofocus>
+                                                autofocus required>
                                         </div>
                                         <div class="form-group col-6">
                                             <label for="last_name">Last Name</label>
-                                            <input id="last_name" type="text" class="form-control" name="last_name">
+                                            <input id="last_name" type="text" class="form-control" name="last_name"
+                                                required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="company">Company</label>
                                         <select class="custom-select" name="company">
                                             <option selected>Pilih Perusahaan</option>
@@ -72,20 +73,35 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                    </div> --}}
+
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <label for="email">Email</label>
+                                            <input id="email" type="email" class="form-control" name="email"
+                                                required>
+                                            <div class="invalid-feedback">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-6">
+                                            <label for="notelp">Phone Number</label>
+                                            <input id="notelp" type="text" class="form-control" name="notelp">
+                                            <div class="invalid-feedback">
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input id="email" type="email" class="form-control" name="email">
-                                        <div class="invalid-feedback">
-                                        </div>
+                                        <label for="address">Address</label>
+                                        <textarea class="form-control" id="address" name="address" rows="3"></textarea>
                                     </div>
 
                                     <div class="row">
                                         <div class="form-group col-6">
                                             <label for="password" class="d-block">Password</label>
                                             <input id="password" type="password" class="form-control pwstrength"
-                                                data-indicator="pwindicator" name="password">
+                                                data-indicator="pwindicator" name="password" required>
                                             <div id="pwindicator" class="pwindicator">
                                                 <div class="bar"></div>
                                                 <div class="label"></div>
@@ -94,13 +110,13 @@
                                         <div class="form-group col-6">
                                             <label for="password2" class="d-block">Password Confirmation</label>
                                             <input id="password2" type="password" class="form-control"
-                                                name="password-confirm">
+                                                name="password-confirm" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" name="agree" class="custom-control-input"
-                                                id="agree">
+                                                id="agree" required>
                                             <label class="custom-control-label" for="agree">I agree with the terms
                                                 and conditions</label>
                                         </div>
@@ -114,7 +130,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="mt-5 text-muted text-center">
+                        <div class="my-5 text-muted text-center">
                             Already have an account? <a href="login">Login</a>
                         </div>
                     </div>

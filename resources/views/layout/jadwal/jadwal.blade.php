@@ -27,8 +27,10 @@
                                     <div class="input-group-btn">
                                         <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                     </div>
-                                    <a href="/tambahjadwal" class="btn btn-primary">Add
-                                        Schedule</a>
+                                    @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                        <a href="/tambahjadwal" class="btn btn-primary ml-2">Add
+                                            Schedule</a>
+                                    @endif
                                     {{-- Session::get('halaman_url') --}}
                                 </form>
                             </div>
@@ -46,7 +48,9 @@
                                 <th>Start at</th>
                                 <th>End at</th>
                                 <th>Operation Day</th>
-                                <th>Action</th>
+                                @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                    <th>Action</th>
+                                @endif
                             </tr>
                             @php
                                 $no = 1;
@@ -61,22 +65,27 @@
                                     <td>{{ $row->end_at }}</td>
                                     <td>
                                         @foreach ($row->operation_day as $name)
-                                            {{ $name }},
+                                            {{ $name }}
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
                                         @endforeach
                                     </td>
-                                    <td>
-                                        <a href="{{ route('tampiljadwal', $row->id) }}"
-                                            class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
-                                        <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                            onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+                                    @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                        <td>
+                                            <a href="{{ route('tampiljadwal', $row->id) }}"
+                                                class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
+                                            <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
+                                                onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
 
-                                        <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('deletejadwal', $row->id) }}" method="POST"
-                                            style="display: none;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                        </form>
-                                    </td>
+                                            <form id="delete-form-{{ $row->id }}"
+                                                action="{{ route('deletejadwal', $row->id) }}" method="POST"
+                                                style="display: none;">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </table>

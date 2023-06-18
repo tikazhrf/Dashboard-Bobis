@@ -41,6 +41,7 @@ class BusStopsController extends Controller
         $data = BusStops::find($id);
 
         $data->update($request->all());
+        Alert::toast('Berhasil mengedit data bus stops!', 'success')->persistent(false, false)->autoClose(3000);
         return redirect()->route('busstops')->with('success', 'Bus Stops successfully updated');
     }
 

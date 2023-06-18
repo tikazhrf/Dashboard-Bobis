@@ -28,8 +28,10 @@
                                     <div class="input-group-btn">
                                         <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                     </div>
-                                    <a href="/tambahbusstops" class="btn btn-primary">Add Bus
-                                        Stops</a>
+                                    @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                        <a href="/tambahbusstops" class="btn btn-primary ml-2">Add Bus
+                                            Stops</a>
+                                    @endif
                                     {{-- Session::get('halaman_url') --}}
                                 </form>
                             </div>
@@ -42,7 +44,11 @@
                             <tr>
                                 <th>#</th>
                                 <th>Bus Stops</th>
-                                <th>Action</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                    <th>Action</th>
+                                @endif
                             </tr>
                             @php
                                 $no = 1;
@@ -51,19 +57,23 @@
                                 <tr>
                                     <th scope="row">{{ $index + $data->firstItem() }}</th>
                                     <td>{{ $row->bus_stops }}</td>
-                                    <td>
-                                        <a href="/tampilbusstops/{{ $row->id }}"
-                                            class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
-                                        <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                            onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+                                    <td>{{ $row->latitude }}</td>
+                                    <td>{{ $row->longitude }}</td>
+                                    @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                        <td>
+                                            <a href="/tampilbusstops/{{ $row->id }}"
+                                                class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
+                                            <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
+                                                onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
 
-                                        <form id="delete-form-{{ $row->id }}"
-                                            action="{{ route('deletebusstops', $row->id) }}" method="POST"
-                                            style="display: none;">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                        </form>
-                                    </td>
+                                            <form id="delete-form-{{ $row->id }}"
+                                                action="{{ route('deletebusstops', $row->id) }}" method="POST"
+                                                style="display: none;">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </table>

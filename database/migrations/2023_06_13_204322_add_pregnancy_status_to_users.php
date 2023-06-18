@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('image')->nullable();
-            $table->string('notelp')->nullable();
-            $table->string('address')->nullable();
+            $table->date('pregnancy_start_date')->nullable();
+            $table->date('pregnancy_end_date')->nullable();
+            $table->enum('status', ['Disabilitas', 'Ibu Hamil', 'Umum'])->default('Umum');
         });
     }
 
@@ -28,9 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('image');
-            $table->dropColumn('notelp');
-            $table->dropColumn('address');
+            //
         });
     }
 };

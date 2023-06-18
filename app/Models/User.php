@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -27,6 +28,9 @@ class User extends Authenticatable
         'image',
         'notelp',
         'address',
+        'pregnancy_start_date',
+        'pregnancy_end_date',
+        'status',
         'company_id',
     ];
 
@@ -57,5 +61,34 @@ class User extends Authenticatable
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    protected $dates = [
+        'pregnancy_start_date',
+    ];
+
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            if ($user->status === 'Ibu Hamil') {
+                $user->pregnancy_start_date = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+                $user->pregnancy_end_date = Carbon::now('Asia/Jakarta')->addDays(60)->format('Y-m-d');
+            }
+        });
+
+        static::updating(function ($user) {
+            if ($user->status === 'Ibu Hamil' && $user->pregnancy_start_date !== null) {
+                $user->pregnancy_start_date = Carbon::now('Asia/Jakarta')->format('Y-m-d');
+                $user->pregnancy_end_date = $user->pregnancy_start_date->copy()->addDays(60);
+
+                $now = Carbon::now('Asia/Jakarta');
+
+                if ($now->greaterThanOrEqualTo($user->pregnancy_end_date)) {
+                    $user->pregnancy_start_date = null;
+                    $user->pregnancy_end_date = null;
+                    $user->status = 'Umum';
+                }
+            }
+        });
     }
 }

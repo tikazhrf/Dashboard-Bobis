@@ -57,7 +57,7 @@ class BusController extends Controller
         $bus->bpkb_expired = $request->bpkb_expired;
         $bus->driver = $request->driver;
         $bus->total_seats = $request->total_seats;
-        if(Auth::user()->role !== 'Superadmin') {
+        if (Auth::user()->role !== 'Superadmin') {
             $bus->company_id = Auth::user()->company_id;
         }
         $bus->company_id = $request->company;
@@ -87,7 +87,7 @@ class BusController extends Controller
         $data->bpkb_expired = $request->bpkb_expired;
         $data->driver = $request->driver;
         $data->total_seats = $request->total_seats;
-        if(Auth::user()->role !== 'Superadmin') {
+        if (Auth::user()->role !== 'Superadmin') {
             $data->company_id = Auth::user()->company_id;
         }
         $data->company_id = $request->company;

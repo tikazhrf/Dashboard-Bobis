@@ -19,16 +19,17 @@ class JadwalController extends Controller
             $data = Bus::where('code_bus', 'LIKE', '%' . $request->search . '%')->paginate(10);
             Session::put('halaman_url', request()->fullUrl());
         } else {
-            if ($user->role == 'Superadmin') {
+            if ($user->role == 'Superadmin' || $user->role == 'user') {
                 $data = Jadwal::paginate(10);
                 Session::put('halaman_url', request()->fullUrl());
             } else {
                 $company_id = $user->company_id;
-                $data = Bus::where('company_id', $company_id)->paginate(10);
+                $data = Jadwal::whereHas('buses', function ($query) use ($company_id) {
+                    $query->where('company_id', $company_id);
+                })->paginate(10);
                 Session::put('halaman_url', request()->fullUrl());
             }
         }
-        //dd($data);
         return view('layout.jadwal.jadwal', compact('data'));
     }
 
@@ -70,7 +71,7 @@ class JadwalController extends Controller
         $data = Jadwal::find($id);
         $data->update($request->all());
 
-        return redirect()->route('jadwal')->with('success3', 'Schedule successfully updated');
+        return redirect()->route('jadwal')->with('success', 'Schedule successfully updated');
     }
 
     public function deletejadwal($id)

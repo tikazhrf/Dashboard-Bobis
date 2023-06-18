@@ -12,23 +12,17 @@
         </div>
 
         <ul class="sidebar-menu">
-            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
-                <li class="dropdown active">
-                    <a href="#" class="nav-link has-dropdown"><i
-                            class="fas fa-fire"></i><span>Dashboard</span></a>
-                    <ul class="dropdown-menu">
-                        <li class=active><a class="nav-link" href="{{ route('dashboard') }}">BoBus
-                                Dashboard</a></li>
-                    </ul>
-                </li>
-            @endif
+            <li class="dropdown active">
+                <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                <ul class="dropdown-menu">
+                    <li class=active><a class="nav-link" href="{{ route('dashboard') }}">BoBus
+                            Dashboard</a></li>
+                </ul>
+            </li>
 
 
-            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
+            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'user')
                 <li class="menu-header">Ticket</li>
-            @endif
-
-            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
                 <li><a href="/bookingtiket"><i class="fas fa-columns"></i> <span>Ticket Booking</span></a>
                 </li>
             @endif
@@ -37,20 +31,16 @@
                 <li><a href="/kategoritiket"><i class="fas fa-th"></i> <span>Ticket Category</span></a></li>
             @endif
 
-            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
-                <li class="menu-header">Data</li>
-            @endif
+            <li class="menu-header">Data</li>
 
             @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
                 <li><a href="#"><i class="fas fa-user"></i> <span>Customer Data</span></a></li>
                 <li><a href="/databus"><i class="far fa-file-alt"></i><span>Bus</span></a></li>
             @endif
 
-            @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO' || auth()->user()->role == 'Driver')
-                <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
-                <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
-                <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
-            @endif
+            <li><a href="/busstops"><i class="fas fa-map-marker-alt"></i> <span>Bus Stops</span></a></li>
+            <li><a href="/rutebus"><i class="fas fa-map"></i> <span>Route Bus</span></a></li>
+            <li><a href="/jadwal"><i class="fas fa-calendar"></i> <span>Schedule</span></a></li>
 
             @if (auth()->user()->role == 'Superadmin')
                 <li><a class="nav-link" href="/trackbus"><i class="fas fa-location-arrow"></i><span>Track
@@ -64,8 +54,8 @@
                 <li><a href="{{ route('finance.index') }}"><i class="fas fa-user"></i> <span>Finance</span></a></li>
             @endif
 
-            <li class="menu-header">Pages</li>
             @if (auth()->user()->role == 'Superadmin' || auth()->user()->role == 'managementPO')
+                <li class="menu-header">Pages</li>
                 <li><a class="nav-link" href="{{ route('usermanagement') }}"><i class="fas fa-pencil-ruler"></i>
                         <span>User
                             Management</span></a></li>

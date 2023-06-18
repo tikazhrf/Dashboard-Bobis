@@ -25,6 +25,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('style/dist/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('style/dist/assets/css/components.css') }}">
+
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
 
@@ -41,6 +42,15 @@
         gtag('config', 'UA-94034622-3');
     </script>
     <!-- /END GA -->
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css"
+        type="text/css">
+    <div id="map"></div>
 </head>
 
 <body>

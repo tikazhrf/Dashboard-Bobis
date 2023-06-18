@@ -4028,3 +4028,11 @@ body:not(.sidebar-mini)
     vertical-align: top;
     padding: 10px 5px;
 }
+
+.map {
+    display: block;
+}
+
+.table td {
+    vertical-align: middle;
+}

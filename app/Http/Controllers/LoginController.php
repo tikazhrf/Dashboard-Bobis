@@ -22,19 +22,60 @@ class LoginController extends Controller
 {
     public function index()
     {
-        $transaction = count(Transaction::all());
-        $paid = Transaction::where('status', 'Paid')->count();
-        $unpaid = Transaction::where('status', 'Unpaid')->count();
-        $pending = Transaction::where('status', 'Pending')->count();
-        $totalAkun = User::where('company_id', Auth::user()->company_id)->count();
-        $companies = Company::pluck('company_name');
-        $totalBalance = Transaction::where('status', 'paid')->sum('total_price');
         $today = Carbon::now()->setTimezone('Asia/Jakarta')->format('l');
-        $buses = Jadwal::join('buses', 'jadwals.buses_id', '=', 'buses.id')
-            ->where('jadwals.operation_day', 'like', '%"' . $today . '"%')
-            ->get();
 
-        $tiketTersedia = [];
+        if (Auth::user()->role == 'managementPO' || Auth::user()->role == 'Driver') {
+
+            $transaction = Transaction::whereHas('bus.company', function ($query) {
+                $query->where('id', Auth::user()->company_id);
+            })->count();
+
+            $paid = Transaction::where('status', 'Paid')->whereHas('bus.company', function ($query) {
+                $query->where('id', Auth::user()->company_id);
+            })->count();
+
+            $unpaid = Transaction::where('status', 'Unpaid')->whereHas('bus.company', function ($query) {
+                $query->where('id', Auth::user()->company_id);
+            })->count();
+
+            $pending = Transaction::where('status', 'Pending')->whereHas('bus.company', function ($query) {
+                $query->where('id', Auth::user()->company_id);
+            })->count();
+
+            $totalBalance = Transaction::where('status', 'Paid')->whereHas('bus.company', function ($query) {
+                $query->where('id', Auth::user()->company_id);
+            })->sum('total_price');
+
+            $companies = Company::where('id', Auth::user()->company_id)->pluck('company_name');
+
+            $buses = Jadwal::join('buses', 'jadwals.buses_id', '=', 'buses.id')
+                ->where('jadwals.operation_day', 'like', '%"' . $today . '"%')
+                ->where('buses.company_id', Auth::user()->company_id)
+                ->get();
+        } else {
+            $transaction = Transaction::all()->count();
+
+            $paid = Transaction::where('status', 'Paid')->count();
+
+            $unpaid = Transaction::where('status', 'Unpaid')->count();
+
+            $pending = Transaction::where('status', 'Pending')->count();
+
+            $companies = Company::pluck('company_name');
+
+            $totalBalance = Transaction::where('status', 'Paid')->sum('total_price');
+
+            $buses = Jadwal::join('buses', 'jadwals.buses_id', '=', 'buses.id')
+                ->where('jadwals.operation_day', 'like', '%"' . $today . '"%')
+                ->get();
+        }
+
+
+        if (Auth::user()->role == 'managementPO' || Auth::user()->role == 'Driver') {
+            $totalAkun = User::where('company_id', Auth::user()->company_id)->count();
+        } else {
+            $totalAkun = User::all()->count();
+        }
 
         $tiketTersedia = [];
 
@@ -54,10 +95,18 @@ class LoginController extends Controller
         $tiketTerjual = [];
 
         foreach ($companies as $company) {
-            $tiketTerjual[] = BookingTiket::whereHas('buses.company', function ($query) use ($company) {
-                $query->where('company_name', $company);
-            })->count();
+            if (Auth::user()->role == 'managementPO' || Auth::user()->role == 'Driver') {
+                $jumlahTiketTerjual = BookingTiket::whereHas('buses.company', function ($query) use ($company) {
+                    $query->where('company_name', $company)->where('id', Auth::user()->company_id);
+                })->count();
+            } else {
+                $jumlahTiketTerjual = BookingTiket::whereHas('buses.company', function ($query) use ($company) {
+                    $query->where('company_name', $company);
+                })->count();
+            }
+            $tiketTerjual[] = $jumlahTiketTerjual;
         }
+
 
         return view('welcome', compact('totalAkun', 'transaction', 'companies', 'tiketTerjual', 'totalBalance', 'paid', 'unpaid', 'pending', 'buses', 'tiketTersedia'));
     }
@@ -91,11 +140,17 @@ class LoginController extends Controller
     public function registeruser(Request $request)
     {
         //dd($request->all());
+        $request->validate([
+            'agree' => 'required|accepted',
+        ]);
+
         User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'company_id' => $request->company,
+            // 'company_id' => $request->company,
             'email' => $request->email,
+            'notelp' => $request->notelp,
+            'address' => $request->address,
             'password' => bcrypt($request->password),
             'password_confirm' => bcrypt($request->password_confirm),
             'remember_token' => Str::random(60),
@@ -108,29 +163,5 @@ class LoginController extends Controller
     {
         Auth::logout();
         return redirect('login');
-    }
-
-    public function detailmanagement()
-    {
-        $data = User::all()->where('role', 'managementPO');
-        return view('layout.user-management.detailmanagement', compact('data'));
-    }
-
-    public function detaildriver()
-    {
-        $data = User::all()->where('role', 'Driver');
-        return view('layout.user-management.detaildriver', compact('data'));
-    }
-
-    public function detailuser()
-    {
-        $data = User::all()->where('role', 'user');
-        return view('layout.user-management.detailuser', compact('data'));
-    }
-
-    public function tampilmanagement($id)
-    {
-        $data = User::find($id);
-        return view('layout.user-management.tampilmanagement', compact('data'));
     }
 }

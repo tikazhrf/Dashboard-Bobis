@@ -60,8 +60,7 @@
             <table class="table table-md mt-1">
                 <tr>
                     <td class="col-2">{{ $item->start_at }}</td>
-                    <td class="col-4">{{ $item->rutes->origin->bus_stops }} <i
-                            class="fa-solid fa-chevron-right mx-5"></i>
+                    <td class="col-4">{{ $item->rutes->origin->bus_stops }} <i class="fa-solid fa-chevron-right mx-5"></i>
                         {{ $item->rutes->destination->bus_stops }}</td>
                     <td class="col-2">{{ $item->buses->total_seats }}</td>
                     <td class="col-2">{{ $item->rutes->price }}</td>
@@ -90,10 +89,10 @@
         <div class="card seat-map p-5" id="seatMap_{{ $item->id }}" style="display: none; background-color: #DBDBDB;">
             <div class="row align-items-center justify-content-center">
                 @php
+                    $userStatus = Auth::user()->status;
+                    $userRole = Auth::user()->role;
                     $totalSeats = $item->buses->total_seats;
                     $selectedSeats = [];
-                    $disabilitySeats = [3, 4, 5, 6]; // disability seats
-                    $pregnantSeats = [26, 27, 28]; // pregnant seats
                     $rowCount = 4; // jumlah baris
                     
                     // Jumlah kursi pada baris 1
@@ -130,18 +129,54 @@
                                             @for ($col = 1; $col <= ${"columnCount$row"}; $col++)
                                                 @php
                                                     $seatLabel = chr(64 + $col) . $row;
+                                                    $disabilitySeats = ['C1', 'D1', 'E1', 'F1']; // disability seats
+                                                    $pregnantSeats = ['C4', 'D4', 'E4']; // pregnant seats
                                                     $seatClass = '';
                                                     if (in_array($seatLabel, $seatsArray)) {
                                                         $seatClass = 'unavailable';
                                                     } elseif (in_array($seat, $selectedSeats)) {
                                                         $seatClass = 'selected';
-                                                    } elseif (in_array($seat, $disabilitySeats)) {
-                                                        $seatClass = 'disability';
-                                                    } elseif (in_array($seat, $pregnantSeats)) {
-                                                        $seatClass = 'pregnant';
                                                     } else {
-                                                        $seatClass = 'available';
+                                                        $isPregnantSeat = in_array($seatLabel, $pregnantSeats);
+                                                        $isDisabilitySeat = in_array($seatLabel, $disabilitySeats);
+                                                    
+                                                        if ($userStatus === 'Ibu Hamil') {
+                                                            if ($isPregnantSeat) {
+                                                                $seatClass = 'pregnant';
+                                                            } elseif ($isDisabilitySeat) {
+                                                                $seatClass = 'disability disabled';
+                                                            } else {
+                                                                $seatClass = 'available disabled';
+                                                            }
+                                                        } elseif ($userStatus === 'Disabilitas') {
+                                                            if ($isDisabilitySeat) {
+                                                                $seatClass = 'disability';
+                                                            } elseif ($isPregnantSeat) {
+                                                                $seatClass = 'pregnant disabled';
+                                                            } else {
+                                                                $seatClass = 'available disabled';
+                                                            }
+                                                        } elseif ($userStatus === 'Umum') {
+                                                            if ($userRole !== 'Superadmin' && $userRole !== 'managementPO') {
+                                                                if ($isDisabilitySeat) {
+                                                                    $seatClass = 'disability disabled';
+                                                                } elseif ($isPregnantSeat) {
+                                                                    $seatClass = 'pregnant disabled';
+                                                                } else {
+                                                                    $seatClass = 'available';
+                                                                }
+                                                            } else {
+                                                                if ($isDisabilitySeat) {
+                                                                    $seatClass = 'disability';
+                                                                } elseif ($isPregnantSeat) {
+                                                                    $seatClass = 'pregnant';
+                                                                } else {
+                                                                    $seatClass = 'available';
+                                                                }
+                                                            }
+                                                        }
                                                     }
+                                                    
                                                     $seat++;
                                                 @endphp
 
@@ -215,10 +250,8 @@
                                     @csrf
                                     <input hidden name="bus_id" value="{{ $item->buses_id }}">
                                     <input hidden name="jadwals_id" value="{{ $item->id }}">
-                                    <input hidden name="selected_seats"
-                                        id="selectedSeatsInput_{{ $item->id }}">
-                                    <input hidden name="seat_category_id"
-                                        id="seatCategoryIdInput_{{ $item->id }}">
+                                    <input hidden name="selected_seats" id="selectedSeatsInput_{{ $item->id }}">
+                                    <input hidden name="seat_category_id" id="seatCategoryIdInput_{{ $item->id }}">
 
                                     <button type="submit" class="btn btn-primary"
                                         id="selectSeatButton_{{ $item->id }}" style="display: none;">Pesan
@@ -241,9 +274,20 @@
             const seatElement = document.querySelector(`#seatMap_${itemId} .seat[data-seat='${seatLabel}']`);
 
             if (seatElement.classList.contains('unavailable')) {
-                // Kursi tidak tersedia
                 return;
             }
+
+            if (seatElement.classList.contains('disabled')) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Kursi tidak sesuai',
+                    text: 'Sesuaikan dengan kebutuhan anda!',
+                    confirmButtonColor: '#6777ef',
+                    confirmButtonText: 'OK'
+                });;
+                return;
+            }
+
 
             if (!selectedSeats[itemId]) {
                 selectedSeats[itemId] = [];

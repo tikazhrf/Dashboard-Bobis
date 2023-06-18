@@ -27,7 +27,9 @@
                                         <div class="input-group-btn">
                                             <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                                         </div>
-                                        <a href="/tambahbus" class="btn btn-primary">Add Bus</a>
+                                        @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                            <a href="/tambahbus" class="btn btn-primary ml-2">Add Bus</a>
+                                        @endif
                                         {{-- Session::get('halaman_url') --}}
                                     </form>
                                 </div>
@@ -47,7 +49,9 @@
                                     <th>BPKB Expired</th>
                                     <th>Driver</th>
                                     <th>Total Seat</th>
-                                    <th>Action</th>
+                                    @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                                 @php
                                     $no = 1;
@@ -66,19 +70,21 @@
                                         <td>{{ $row->bpkb_expired }}</td>
                                         <td>{{ $row->driver }}</td>
                                         <td>{{ $row->total_seats }}</td>
-                                        <td>
-                                            <a href="/tampilbus/{{ $row->id }}"
-                                                class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
-                                            <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
-                                                onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
+                                        @if (Auth::user()->role == 'Superadmin' || Auth::user()->role == 'managementPO')
+                                            <td>
+                                                <a href="/tampilbus/{{ $row->id }}"
+                                                    class="btn btn-warning rounded-circle fa fa-pencil-alt"></a>
+                                                <a href="#" class="btn btn-danger rounded-circle fa fa-trash delete"
+                                                    onclick="event.preventDefault(); showConfirmationModal({{ $row->id }});"></a>
 
-                                            <form id="delete-form-{{ $row->id }}"
-                                                action="{{ route('deletebus', $row->id) }}" method="POST"
-                                                style="display: none;">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                            </form>
-                                        </td>
+                                                <form id="delete-form-{{ $row->id }}"
+                                                    action="{{ route('deletebus', $row->id) }}" method="POST"
+                                                    style="display: none;">
+                                                    {{ csrf_field() }}
+                                                    {{ method_field('DELETE') }}
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </table>
