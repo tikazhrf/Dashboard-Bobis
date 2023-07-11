@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -151,8 +152,8 @@ class LoginController extends Controller
             'email' => $request->email,
             'notelp' => $request->notelp,
             'address' => $request->address,
-            'password' => bcrypt($request->password),
-            'password_confirm' => bcrypt($request->password_confirm),
+            'password' => Hash::make($request->password),
+            'password_confirm' => Hash::make($request->password_confirm),
             'remember_token' => Str::random(60),
         ]);
 

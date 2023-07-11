@@ -94,6 +94,10 @@
 @endsection
 
 @section('script')
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css"
+        type="text/css">
     <script>
         function showMap(event, mapId, originLat, originLng, destLat, destLng) {
             event.preventDefault();
@@ -142,7 +146,7 @@
                             "layout": {
                                 "line-cap": "round",
                                 "line-join": "round"
-                            },
+                            }
                         },
                     });
                     map.addControl(directions, 'top-left');

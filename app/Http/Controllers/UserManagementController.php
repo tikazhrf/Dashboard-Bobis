@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
@@ -48,8 +49,8 @@ class UserManagementController extends Controller
         $data->notelp = $request->notelp;
         $data->address = $request->address;
         $data->role = $request->role;
-        $data->password = $request->password;
-        $data->password_confirm = $data->password;
+        $data->password = Hash::make($request->password);
+        $data->password_confirm = Hash::make($request->password);
         $data->status = $request->status;
         $data->updated_at = Carbon::now();
         if ($data->status === 'Ibu Hamil') {
